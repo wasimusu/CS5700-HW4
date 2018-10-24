@@ -1,0 +1,16 @@
+// directories
+.idea
+.gradle
+gradle
+
+**/.idea
+**/.gradle
+**/gradle
+**/out
+
+*.class
+gradlew
+settings.gradle
+
+*.xml
+*.iml
