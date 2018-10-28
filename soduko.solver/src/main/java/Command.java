@@ -1,2 +1,6 @@
-public class Command {
+import java.awt.*;
+
+public interface Command {
+    public void execute();
 }
+
