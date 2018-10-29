@@ -89,8 +89,17 @@ public class FirstStrategySoduku {
             System.out.println("Valid Sudoku");
     }
 
-    public void verify() {
-        // Verify that the puzzle you solved is correct
+    public String toString() {
+        // Convert the solved sudoku to string to display on console or write to file
+        String stringPuzzle = "";
+        for (int i = 0; i < this.puzzleSize; i++) {
+            for (int j = 0; j < this.puzzleSize; j++) {
+                stringPuzzle = stringPuzzle.concat(int_to_char.get(this.cells[i][j]) + " ");
+//                stringPuzzle = stringPuzzle.concat(String.valueOf(cells[i][j]) + " ");
+            }
+            stringPuzzle = stringPuzzle.concat(System.lineSeparator());
+        }
+        System.out.println(stringPuzzle);
+        return stringPuzzle;
     }
-
 }
