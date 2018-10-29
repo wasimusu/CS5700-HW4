@@ -6,11 +6,15 @@ public class FileReadCommand implements Command {
     private String inputFilename;
     private String outputFilename;
 
+    public FileReadCommand(String filename){
+        this.inputFilename = filename;
+    }
+
     public void execute() {
     }
 
-    public void readPuzzle(String inputFilename) throws Exception {
-        File file = new File(inputFilename);
+    public void readPuzzle() throws Exception {
+        File file = new File(this.inputFilename);
         BufferedReader reader = new BufferedReader(new FileReader(file));
         String line = "";
         String puzzle = "";
@@ -19,16 +23,16 @@ public class FileReadCommand implements Command {
         while ((line = reader.readLine()) != null)
             puzzle = puzzle.concat(line+System.lineSeparator());
 
-        System.out.println("Size of puzzle :" + sizePuzzle);
-        System.out.println("Charmap : " + charMap);
-        System.out.println(puzzle);
+        FirstStrategySoduku sodukuSolver = new FirstStrategySoduku(sizePuzzle, charMap, puzzle);
+        sodukuSolver.buildSoduko();
+        sodukuSolver.sanityCheck();
     }
 
     public static void main(String[] args) throws Exception {
         String filename = "src/main/resources/SamplePuzzles/Input/Puzzle-4x4-0001.txt";
 //        String filename = "Puzzle-4x4-0001.txt";
-        FileReadCommand fileReadCommand = new FileReadCommand();
-        fileReadCommand.readPuzzle(filename);
+        FileReadCommand fileReadCommand = new FileReadCommand(filename);
+        fileReadCommand.readPuzzle();
     }
 
 }
