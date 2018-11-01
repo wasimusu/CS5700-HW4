@@ -13,7 +13,7 @@ public class FileReadCommand implements Command {
     public void execute() {
     }
 
-    public void readPuzzle() throws Exception {
+    public FirstStrategySoduku readPuzzle() throws Exception {
         File file = new File(this.inputFilename);
         BufferedReader reader = new BufferedReader(new FileReader(file));
         String line = "";
@@ -23,10 +23,7 @@ public class FileReadCommand implements Command {
         while ((line = reader.readLine()) != null)
             puzzle = puzzle.concat(line + System.lineSeparator());
 
-        FirstStrategySoduku sodukuSolver = new FirstStrategySoduku(sizePuzzle, charMap, puzzle);
-        sodukuSolver.buildSoduko();
-        sodukuSolver.sanityCheck();
-        sodukuSolver.toString();
+        return new FirstStrategySoduku(sizePuzzle, charMap, puzzle);
     }
 
 }
