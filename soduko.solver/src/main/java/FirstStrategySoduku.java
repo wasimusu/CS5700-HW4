@@ -14,7 +14,6 @@ public class FirstStrategySoduku {
 
     private int[] missingRow;
     private int[] missingCol;
-    private int[][] missingPart;
     private int size;
 
     HashMap<Integer, Integer> minimumCells = new HashMap<Integer, Integer>();
@@ -62,12 +61,7 @@ public class FirstStrategySoduku {
 
             if (missingCol[i] == this.puzzleSize) missingCol[i] = 0;
             totalMissing += missingCol[i];
-//            System.out.println(missingCol[i] + " " + missingRow[i] + " " + minColIndex + " " + minRowIndex);
         }
-
-//        // Find the missing cell and probable value
-//        System.out.println("Row " + minRowIndex + " : " + min + " " + row);
-//        System.out.println("Col " + minColIndex + " : " + min + " " + row);
 
         if (totalMissing == 0) return;
         if (min > 1) {
@@ -111,8 +105,11 @@ public class FirstStrategySoduku {
 
     public void solvePart() {
         // solve a quard for 4*4 or nonet for 9*9
+        // if we have a missing value for a cell
+        // we find what is missing
+        // we find valid values for that column
+        // we find valid values for that row
 
-        missingPart = new int[2][2];
         int min = 1000;
         int row = 1000;
         int col = 1000;
@@ -136,19 +133,13 @@ public class FirstStrategySoduku {
 
 //        System.out.println("Total missing : " + totalMissing);
         if (totalMissing == 0) return;
-        if (min > 2) return; // can't solve
 
         System.out.println("Minimum missing quad : " + row + " , " + col + " : " + min + " values");
         // These are problematic areas resolve them soon
-        int[] expectedValues = new int[min];
-        expectedValues = this.missingInPart(row, col, min);
+        int[] expectedValues = this.missingInPart(row, col, min);
 
         for (int i = row * size; i < row * size + size; i++) {
             for (int j = col * size; j < col * size + size; j++) {
-                // if we have a missing value for a cell
-                // we find what is missing
-                // we find valid values for that column
-                // we find valid values for that row
                 if (this.cells[i][j] < 0) {
                     this.validValuesForCell(i, j, expectedValues);
                 }
@@ -156,7 +147,6 @@ public class FirstStrategySoduku {
         }
 
         this.solvePart();
-        System.out.print(this.toString());
     }
 
     public void validValuesForCell(int row, int col, int[] expectedValues) {
@@ -164,6 +154,7 @@ public class FirstStrategySoduku {
         // Find all the elements of that row and check if one of expected value is in that row
         // Do above for column also
         int filledCount = 0; // how many missing items was filled
+        System.out.println("Hey");
         boolean valid = true;
         int validCount = 0;
         int validValue = 0;
@@ -179,14 +170,18 @@ public class FirstStrategySoduku {
             System.out.println("Value : " + value + "\t(" + row + ", " + col + ")" + "\tCount " + validCount);
         }
 
+        // It has to be at the end of for loop
         if (validCount == 1) {
             this.cells[row][col] = validValue;
             System.out.println(this.toString());
         }
+        else{
+            System.out.println("Did not apply any value");
+        }
     }
 
     public int[] missingInPart(int r, int c, int missCount) {
-        System.out.println(r + " " + c + " : " + missCount);
+//        System.out.println(r + " " + c + " : " + missCount);
         int[] missing = new int[missCount];
         HashSet<Integer> present = new HashSet<>();
         int index = 0;
