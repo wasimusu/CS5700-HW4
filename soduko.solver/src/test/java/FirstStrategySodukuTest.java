@@ -7,13 +7,17 @@ public class FirstStrategySodukuTest {
     @Test
     public void verify() throws Exception {
         String path = "src/main/resources/SamplePuzzles/Input";
-        String file = "Puzzle-4x4-0001.txt";
-//        String file = "Puzzle-4x4-0901.txt";
-//        String file = "Puzzle-4x4-0903.txt"; // same item in a row
-//        String file = "Puzzle-4x4-0905.txt"; // rows missing
-//        String file = "Puzzle-4x4-0907.txt"; // additional rows
-//        String file = "Puzzle-4x4-0906.txt"; // no blanks
-//        String file = "Puzzle-9x9-0001.txt"; // no blanks
+//        String file = "Puzzle-4x4-0001.txt";  // valid
+        String file = "Puzzle-4x4-0101.txt";  // valid
+//        String file = "Puzzle-4x4-0201.txt";  // valid
+//        String file = "Puzzle-4x4-0901.txt"; // invalid
+//        String file = "Puzzle-4x4-0903.txt"; // same item in a row -- invalid
+//        String file = "Puzzle-4x4-0905.txt"; // rows missing -- invalid
+//        String file = "Puzzle-4x4-0907.txt"; // additional rows -- invalid
+//        String file = "Puzzle-4x4-0906.txt"; // no blanks -- invalid
+//        String file = "Puzzle-9x9-0001.txt"; // valid
+//        String file = "Puzzle-9x9-0002.txt"; // valid
+//        String file = "Puzzle-9x9-0101.txt"; // valid
 
         String filename = Paths.get(path, file).toString();
 
@@ -22,7 +26,7 @@ public class FirstStrategySodukuTest {
         boolean valid = soduku.buildSoduko();
 
         if (valid) {
-            soduku.solve();
+            soduku.solvePart();
             soduku.sanityCheck();
             System.out.println(soduku.toString());
         }

@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+
 
 public class FirstStrategySoduku {
     private int[][] cells;
@@ -12,6 +14,10 @@ public class FirstStrategySoduku {
 
     private int[] missingRow;
     private int[] missingCol;
+    private int[][] missingPart;
+    private int size;
+
+    HashMap<Integer, Integer> minimumCells = new HashMap<Integer, Integer>();
 
     public FirstStrategySoduku(int puzzleSize, String map, String puzzle) {
         String[] maps = map.split(" ");
@@ -19,6 +25,14 @@ public class FirstStrategySoduku {
         this.charset = map;
         this.puzzle = puzzle;
         this.puzzleSize = puzzleSize;
+
+        minimumCells.put(4, 4);
+        minimumCells.put(9, 17);
+        minimumCells.put(16, 16);
+        minimumCells.put(25, 25);
+
+        double ps = puzzleSize;
+        size = (int) Math.sqrt(ps);
     }
 
     public void solve() {
@@ -34,31 +48,32 @@ public class FirstStrategySoduku {
             missingRow[i] = missingInRowCount(i);
             missingCol[i] = missingInColCount(i);
 
-            if (missingCol[i] == this.puzzleSize) missingCol[i] = 0;
-            totalMissing += missingCol[i];
-
-            System.out.println(missingCol[i] + " " + missingRow[i] + " " + minColIndex + " " + minRowIndex);
-
-            if (min >= missingCol[i] && minColIndex > i) {
+            if (min >= missingCol[i]) {
                 min = missingCol[i];
                 minColIndex = i;
                 row = false;
             }
-            if (min >= missingRow[i] && minRowIndex > i) {
+
+            if (min >= missingRow[i]) {
                 min = missingRow[i];
                 minRowIndex = i;
                 row = true;
             }
+
+            if (missingCol[i] == this.puzzleSize) missingCol[i] = 0;
+            totalMissing += missingCol[i];
+//            System.out.println(missingCol[i] + " " + missingRow[i] + " " + minColIndex + " " + minRowIndex);
         }
 
 //        // Find the missing cell and probable value
-//        System.out.println("Row " + minRowIndex + " : " + min);
-//        System.out.println("Col " + minColIndex + " : " + min);
+//        System.out.println("Row " + minRowIndex + " : " + min + " " + row);
+//        System.out.println("Col " + minColIndex + " : " + min + " " + row);
 
         if (totalMissing == 0) return;
         if (min > 1) {
             System.out.println(min);
-            return;} // if the minimum number of missing items in a row or col is more than 1 it can't solve
+            return;
+        } // if the minimum number of missing items in a row or col is more than 1 it can't solve
 
         int sum = 0;
         int j = -1;
@@ -83,15 +98,131 @@ public class FirstStrategySoduku {
         if (row) {
             int value = sudokuSum - sum;
             this.cells[minRowIndex][j] = value;
-            System.out.println("Updated " + minColIndex + " " + j + " " + value);
+//            System.out.println("Updated Row" + minColIndex + " " + j + " " + value);
         }
         if (!row) {
             int value = sudokuSum - sum;
+//            System.out.println("Updated Col" + j + " " + minColIndex + " " + value);
             this.cells[j][minColIndex] = value;
-            System.out.println("Updated " + j + " " + minColIndex + value);
         }
 
         this.solve();
+    }
+
+    public void solvePart() {
+        // solve a quard for 4*4 or nonet for 9*9
+
+        missingPart = new int[2][2];
+        int min = 1000;
+        int row = 1000;
+        int col = 1000;
+        int a;
+        int totalMissing = 0;
+        // Find the part of the sudoku with minimum missing pieces
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                a = missingInPartCount(i, j);
+                if (min > a) {
+                    min = a;
+                    row = i;
+                    col = j;
+                }
+                // Count the total number of missing items
+                if (a == puzzleSize) a = 0;  // because if missing item is zero a larger number is sent by the function
+                totalMissing += a;
+
+            }
+        }
+
+//        System.out.println("Total missing : " + totalMissing);
+        if (totalMissing == 0) return;
+        if (min > 2) return; // can't solve
+
+        System.out.println("Minimum missing quad : " + row + " , " + col + " : " + min + " values");
+        // These are problematic areas resolve them soon
+        int[] expectedValues = new int[min];
+        expectedValues = this.missingInPart(row, col, min);
+
+        for (int i = row * size; i < row * size + size; i++) {
+            for (int j = col * size; j < col * size + size; j++) {
+                // if we have a missing value for a cell
+                // we find what is missing
+                // we find valid values for that column
+                // we find valid values for that row
+                if (this.cells[i][j] < 0) {
+                    this.validValuesForCell(i, j, expectedValues);
+                }
+            }
+        }
+
+        this.solvePart();
+        System.out.print(this.toString());
+    }
+
+    public void validValuesForCell(int row, int col, int[] expectedValues) {
+        // Finds suitable place for expected value looking through row and col
+        // Find all the elements of that row and check if one of expected value is in that row
+        // Do above for column also
+        int filledCount = 0; // how many missing items was filled
+        boolean valid = true;
+        int validCount = 0;
+        int validValue = 0;
+        for (int value : expectedValues) {
+            for (int i = 0; i < puzzleSize; i++) {
+                if (value == this.cells[row][i]) valid = false;
+                if (value == this.cells[i][col]) valid = false;
+            }
+            if (valid) {
+                validCount++;
+                validValue = value;
+            }
+            System.out.println("Value : " + value + "\t(" + row + ", " + col + ")" + "\tCount " + validCount);
+        }
+
+        if (validCount == 1) {
+            this.cells[row][col] = validValue;
+            System.out.println(this.toString());
+        }
+    }
+
+    public int[] missingInPart(int r, int c, int missCount) {
+        System.out.println(r + " " + c + " : " + missCount);
+        int[] missing = new int[missCount];
+        HashSet<Integer> present = new HashSet<>();
+        int index = 0;
+        for (int i = r * size; i < r * size + size; i++) {
+            for (int j = c * size; j < c * size + size; j++) {
+                if (this.cells[i][j] >= 0) {
+                    present.add(this.cells[i][j]);
+                    index++;
+                }
+            }
+        }
+
+        index = 0;
+        for (int i = 1; i <= puzzleSize; i++) {
+            if (!present.contains(i)) {
+                missing[index] = i;
+                index++;
+            }
+        }
+
+        return missing;
+    }
+
+//    public int[] missingInRow(int row){}
+//    public int[] missingInCol(int col){}
+
+    public int missingInPartCount(int r, int c) {
+        int count = 0;
+        for (int i = r * size; i < r * size + size; i++) {
+            for (int j = c * size; j < c * size + size; j++) {
+                if (this.cells[i][j] < 0) count++;
+            }
+        }
+        if (count == 0) {
+            return this.puzzleSize;
+        } else return count;
     }
 
     public int missingInRowCount(int r) {
@@ -118,16 +249,20 @@ public class FirstStrategySoduku {
 
     protected boolean buildSoduko() {
         // returns true if the sudoku is valid else false
-
+        int missingItemCount = puzzle.length() - puzzle.replace("-", "").length();
+        if (missingItemCount < minimumCells.get(puzzleSize)) {
+            System.out.println("Less number of missing elements than permitted.");
+            return false;
+        }
         String[] maps = this.charset.split(" ");
 
         // Insert blank char into the hashmap
         this.char_to_int.put("-", -2);
         this.int_to_char.put(-2, "-");
 
-        for (int i = 0; i < this.puzzleSize; i++) {
-            this.int_to_char.put(i, maps[i]);
-            this.char_to_int.put(maps[i], i);
+        for (int i = 1; i <= this.puzzleSize; i++) {
+            this.int_to_char.put(i, maps[i - 1]);
+            this.char_to_int.put(maps[i - 1], i);
             this.sudokuSum += i;
         }
 
