@@ -8,13 +8,18 @@ public class FileReadWriteCommand extends FileReadCommand {
         this.outputFilename = outputFilename;
     }
 
-    public void execute() {
+    public void execute() throws Exception{
+        FirstStrategySoduku sudoku = this.readPuzzle();
+        this.writePuzzle(sudoku);
     }
 
     public void writePuzzle(Sudoku sudoku) throws Exception {
         File file = new File(this.outputFilename);
         BufferedWriter writer = new BufferedWriter( new FileWriter(file));
         writer.write(sudoku.toString());
+
+        // dipose the resources handed to writer
+        writer.close();
     }
 
 }

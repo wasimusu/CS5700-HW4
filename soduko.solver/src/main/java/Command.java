@@ -1,6 +1,6 @@
 import java.awt.*;
 
 public interface Command {
-    void execute();
+    void execute() throws Exception;
 }
 

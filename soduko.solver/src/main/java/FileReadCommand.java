@@ -9,7 +9,8 @@ public class FileReadCommand implements Command {
         this.inputFilename = filename;
     }
 
-    public void execute() {
+    public void execute() throws Exception{
+        this.readPuzzle();
     }
 
     public FirstStrategySoduku readPuzzle() throws Exception {
@@ -22,7 +23,16 @@ public class FileReadCommand implements Command {
         while ((line = reader.readLine()) != null)
             puzzle = puzzle.concat(line + System.lineSeparator());
 
-        return new FirstStrategySoduku(sizePuzzle, charMap, puzzle);
-    }
+        FirstStrategySoduku sudoku = new FirstStrategySoduku(sizePuzzle, charMap, puzzle);
+        boolean valid = sudoku.buildSoduko();
 
+        if (valid) {
+            sudoku.solvePart();
+            sudoku.sanityCheck();
+            System.out.println(sudoku.toString());
+        }
+        // solve and display also
+//        return new FirstStrategySoduku(sizePuzzle, charMap, puzzle);
+        return sudoku;
+    }
 }
