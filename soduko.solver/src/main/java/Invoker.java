@@ -1,10 +1,11 @@
 import java.util.ArrayList;
 
 public class Invoker {
-    private ArrayList<Command> commands;
+    private ArrayList<Command> historyOfCommands;
 
     public void invoke(Command command) {
         // Add to the list of commands that are to be executed
-        commands.add(command);
+        historyOfCommands.add(command);
+        command.execute();
     }
 }

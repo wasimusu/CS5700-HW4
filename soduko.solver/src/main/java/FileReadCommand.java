@@ -3,8 +3,7 @@ import java.io.File;
 import java.io.FileReader;
 
 public class FileReadCommand implements Command {
-    private String inputFilename;
-    private String outputFilename;
+    protected String inputFilename;
 
     public FileReadCommand(String filename) {
         this.inputFilename = filename;
