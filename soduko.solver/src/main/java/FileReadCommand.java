@@ -13,7 +13,7 @@ public class FileReadCommand implements Command {
         this.readPuzzle();
     }
 
-    public FirstStrategySoduku readPuzzle() throws Exception {
+    public MinimumPossibilityCell readPuzzle() throws Exception {
         File file = new File(this.inputFilename);
         BufferedReader reader = new BufferedReader(new FileReader(file));
         String line = "";
@@ -23,13 +23,14 @@ public class FileReadCommand implements Command {
         while ((line = reader.readLine()) != null)
             puzzle = puzzle.concat(line + System.lineSeparator());
 
-        FirstStrategySoduku sudoku = new FirstStrategySoduku(sizePuzzle, charMap, puzzle);
+//        FirstStrategySoduku sudoku = new FirstStrategySoduku(sizePuzzle, charMap, puzzle);
+        MinimumPossibilityCell sudoku = new MinimumPossibilityCell(sizePuzzle, charMap, puzzle);
         boolean valid = sudoku.buildSoduko();
 
         if (valid) {
-            sudoku.solvePart();
-            sudoku.sanityCheck();
-            System.out.println(sudoku.toString());
+            sudoku.solve();
+//            sudoku.sanityCheck();
+//            System.out.println(sudoku.toString());
         }
         // solve and display also
 //        return new FirstStrategySoduku(sizePuzzle, charMap, puzzle);

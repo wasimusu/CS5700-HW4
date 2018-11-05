@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class Sudoku {
     protected int[][] cells;
@@ -9,6 +10,7 @@ public class Sudoku {
     private String charset;
     protected int sudokuSize;
     protected int size; // square root of sudoku size
+    protected int BLANK = -2;
 
     protected HashMap<Integer, Integer> minimumCells = new HashMap<Integer, Integer>();
 
@@ -40,9 +42,9 @@ public class Sudoku {
         }
         String[] maps = this.charset.split(" ");
 
-        // Insert blank char into the hashmap
-        this.char_to_int.put("-", -2);
-        this.int_to_char.put(-2, "-");
+        // Insert BLANK char into the hashmap
+        this.char_to_int.put("-", BLANK);
+        this.int_to_char.put(BLANK, "-");
 
         for (int i = 1; i <= this.sudokuSize; i++) {
             this.int_to_char.put(i, maps[i - 1]);
@@ -80,14 +82,14 @@ public class Sudoku {
         HashMap<String, Integer> cellCounter = new HashMap<String, Integer>();
         boolean sane = true;
 
-        int item = -2;
+        int item = BLANK;
         for (int i = 0; i < this.sudokuSize; i++) {
             ArrayList<Integer> colCharset = new ArrayList<Integer>();
             ArrayList<Integer> rowCharset = new ArrayList<Integer>();
 
             for (int j = 0; j < this.sudokuSize; j++) {
                 item = cells[i][j]; // row
-                if (rowCharset.contains(item) && item != -2) {
+                if (rowCharset.contains(item) && item != BLANK) {
                     {
                         System.out.println("Contains repeated item in row : " + i);
                         sane = false;
@@ -97,7 +99,7 @@ public class Sudoku {
                 }
 
                 item = cells[j][i]; // col
-                if (colCharset.contains(item) && item != -2) {
+                if (colCharset.contains(item) && item != BLANK) {
                     {
                         System.out.println("Contains repeated item in column : " + j);
                         sane = false;
@@ -126,4 +128,79 @@ public class Sudoku {
         }
         return stringPuzzle;
     }
+
+    public int[] missingInPart(int r, int c, int missCount) {
+//        System.out.println(r + " " + c + " : " + missCount);
+        int[] missing = new int[missCount];
+        HashSet<Integer> present = new HashSet<>();
+        int index = 0;
+        for (int i = r * size; i < r * size + size; i++) {
+            for (int j = c * size; j < c * size + size; j++) {
+                if (this.cells[i][j] >= 0) {
+                    present.add(this.cells[i][j]);
+                    index++;
+                }
+            }
+        }
+
+        index = 0;
+        for (int i = 1; i <= sudokuSize; i++) {
+            if (!present.contains(i)) {
+                missing[index] = i;
+                index++;
+            }
+        }
+
+        return missing;
+    }
+
+//    public int[] missingInRow(int row){}
+//    public int[] missingInCol(int col){}
+
+    public int missingInPartCount(int r, int c) {
+        // How many items are missing in a quad
+        int count = 0;
+        for (int i = r * size; i < r * size + size; i++) {
+            for (int j = c * size; j < c * size + size; j++) {
+                if (this.cells[i][j] < 0) count++;
+            }
+        }
+        if (count == 0) {
+            return this.sudokuSize;
+        } else return count;
+    }
+
+    public int missingInRowCount(int r) {
+        // No of missing item in given row
+        int count = 0;
+        for (int i = 0; i < this.sudokuSize; i++) {
+            if (this.cells[r][i] < 0) count++;
+        }
+        if (count == 0) {
+            return this.sudokuSize;
+        } else return count;
+    }
+
+    public int missingInColCount(int c) {
+        // No of missing item in given col
+        int count = 0;
+        for (int i = 0; i < this.sudokuSize; i++) {
+            if (this.cells[i][c] < 0) count++;
+        }
+        if (count == 0) {
+            return this.sudokuSize;
+        } else return count;
+    }
+
+    public int totalMissingCells() {
+        int count = 0;
+        for (int i = 0; i < this.sudokuSize; i++) {
+            for (int j = 0; j < this.sudokuSize; j++) {
+                if (this.cells[i][j] == this.BLANK) count++;
+            }
+        }
+        return count;
+    }
+
+
 }
