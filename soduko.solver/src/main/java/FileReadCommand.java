@@ -9,11 +9,11 @@ public class FileReadCommand implements Command {
         this.inputFilename = filename;
     }
 
-    public void execute() throws Exception{
+    public void execute() throws Exception {
         this.readPuzzle();
     }
 
-    public MinimumPossibilityCell readPuzzle() throws Exception {
+    public GuessACell readPuzzle() throws Exception {
         File file = new File(this.inputFilename);
         BufferedReader reader = new BufferedReader(new FileReader(file));
         String line = "";
@@ -24,14 +24,16 @@ public class FileReadCommand implements Command {
             puzzle = puzzle.concat(line + System.lineSeparator());
 
 //        FirstStrategySoduku sudoku = new FirstStrategySoduku(sizePuzzle, charMap, puzzle);
-        MinimumPossibilityCell sudoku = new MinimumPossibilityCell(sizePuzzle, charMap, puzzle);
+//        MinimumPossibilityCell sudoku = new MinimumPossibilityCell(sizePuzzle, charMap, puzzle);
+        GuessACell sudoku = new GuessACell(sizePuzzle, charMap, puzzle);
         boolean valid = sudoku.buildSoduko();
 
         if (valid) {
             sudoku.solve();
 //            sudoku.sanityCheck();
-//            System.out.println(sudoku.toString());
+            System.out.println(sudoku.toString());
         }
+
         // solve and display also
 //        return new FirstStrategySoduku(sizePuzzle, charMap, puzzle);
         return sudoku;

@@ -18,7 +18,7 @@ public class MinimumPossibilityCell extends Sudoku {
         // If there is no change between two iterations, return
         this.currentlyMissing = this.totalMissingCells();
         System.out.println("Empty Cells: " + this.currentlyMissing);
-        if (this.currentlyMissing == this.previouslyMissing) return;
+        if (this.currentlyMissing == this.previouslyMissing || this.currentlyMissing == 0) return;
         this.previouslyMissing = this.currentlyMissing;
 
         // Find the part of the sudoku with minimum missing pieces
@@ -28,7 +28,7 @@ public class MinimumPossibilityCell extends Sudoku {
                 if (this.cells[i][j] == this.BLANK) expectedValueForCell(i, j);
             }
         }
-        System.out.println(this.toString());
+        solve();
     }
 
     public void expectedValueForCell(int row, int col) {
@@ -54,7 +54,7 @@ public class MinimumPossibilityCell extends Sudoku {
         }
         if (validValueCount == 1) {
             this.cells[row][col] = validValue;
-//            System.out.println(row + ", " + col + " : " + validValueCount + " - " + validValue);
+//            System.out.println(row + ", " + col + " : + " + validValue);
         }
     }
 

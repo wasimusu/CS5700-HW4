@@ -91,8 +91,9 @@ public class Sudoku {
                 item = cells[i][j]; // row
                 if (rowCharset.contains(item) && item != BLANK) {
                     {
-                        System.out.println("Contains repeated item in row : " + i);
+                        System.out.println("Contains repeated item in row : " + i + " : " + item);
                         sane = false;
+                        return sane;
                     }
                 } else {
                     rowCharset.add(item);
@@ -103,14 +104,15 @@ public class Sudoku {
                     {
                         System.out.println("Contains repeated item in column : " + j);
                         sane = false;
+                        return sane;
                     }
                 } else {
                     colCharset.add(item);
                 }
             }
         }
-        if (sane)
-            System.out.println("Valid Sudoku");
+//        if (sane)
+//            System.out.println("Valid Sudoku");
 
         return sane;
     }
@@ -153,9 +155,6 @@ public class Sudoku {
 
         return missing;
     }
-
-//    public int[] missingInRow(int row){}
-//    public int[] missingInCol(int col){}
 
     public int missingInPartCount(int r, int c) {
         // How many items are missing in a quad
