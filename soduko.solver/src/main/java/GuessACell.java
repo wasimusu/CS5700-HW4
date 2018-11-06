@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Random;
 
-public class GuessACell extends Sudoku {
+public class GuessACell extends MinimumPossibilityCell {
 
     private int previouslyMissing = 10000000;
     private int currentlyMissing = 100000000;
@@ -31,7 +31,7 @@ public class GuessACell extends Sudoku {
         // Keep track of it
         // Solve using minimal possibility again
         if (this.firstGuess) this.snapshotSudoku = this.cells;
-        firstGuess = false;
+
 
         // And relish control back to solve()
         int minValidCount = 1000;
@@ -63,6 +63,7 @@ public class GuessACell extends Sudoku {
                 }
             }
         }
+
         int quadRow = Math.floorDiv(guessRow, this.size);
         int quadCol = Math.floorDiv(guessCol, this.size);
 
@@ -75,6 +76,8 @@ public class GuessACell extends Sudoku {
         int random = rand.nextInt(missingValueSize);
         this.cells[guessRow][guessCol] = expectedValues[random];
         System.out.println("Guess : " + guessRow + "," + guessCol + " : " + expectedValues[random]);
+
+        firstGuess = false;
 
     }
 
@@ -112,33 +115,6 @@ public class GuessACell extends Sudoku {
             }
         }
         minimalOption();
-    }
-
-    public void expectedValueForCell(int row, int col) {
-        // determine the quad from the row, col
-        // find the missing values for that quad
-        // check which of the values are valid for each missing cell in that quad
-
-        int quadRow = Math.floorDiv(row, this.size);
-        int quadCol = Math.floorDiv(col, this.size);
-
-        int missingValueSize = this.missingInPartCount(quadRow, quadCol);
-        int[] expectedValues = this.missingInPart(quadRow, quadCol, missingValueSize);
-
-        int validValueCount = 0;
-        int validValue = -2;
-        boolean isValid;
-        for (int value : expectedValues) {
-            isValid = this.validForCell(row, col, value);
-            if (isValid) {
-                validValueCount += 1;
-                validValue = value;
-            }
-        }
-        if (validValueCount == 1) {
-            this.cells[row][col] = validValue;
-//            System.out.println(row + ", " + col + " : " + validValueCount + " - " + validValue);
-        }
     }
 
     public boolean validForCell(int row, int col, int value) {

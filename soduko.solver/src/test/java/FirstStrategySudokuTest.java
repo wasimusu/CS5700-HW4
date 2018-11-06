@@ -23,8 +23,8 @@ public class FirstStrategySudokuTest {
 //        String file = "Puzzle-25x25-0101.txt"; // valid - solved
 
 //        String file = "Puzzle-9x9-0101.txt"; // valid - sometimes the guess is correct
-//        String file = "Puzzle-4x4-0904.txt"; // valid - twins - correct guess
-        String file = "Puzzle-4x4-0903.txt"; // invalid - workout
+        String file = "Puzzle-4x4-0904.txt"; // valid - twins - correct guess
+//        String file = "Puzzle-4x4-0903.txt"; // invalid - workout
 //        String file = "Puzzle-4x4-0902.txt"; // invalid - workout
 //        String file = "Puzzle-16x16-0101.txt"; // invalid - workout
 //        String file = "Puzzle-25x25-0901.txt"; // valid - solved -- OutOfBoundException

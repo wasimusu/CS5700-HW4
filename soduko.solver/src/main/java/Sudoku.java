@@ -34,8 +34,8 @@ public class Sudoku {
     protected boolean buildSoduko() {
         // returns true if the sudoku is valid else false
         int missingItemCount = sudoku.length() - sudoku.replace("-", "").length();
-        System.out.println(this.sudokuSize);
-        System.out.println(this.minimumCells.get(this.sudokuSize));
+        System.out.println("Initializing a sudoku of size : " + this.sudokuSize);
+
         if (missingItemCount < this.minimumCells.get(this.sudokuSize)) {
             System.out.println("Less number of missing elements than permitted.");
             return false;
@@ -46,6 +46,7 @@ public class Sudoku {
         this.char_to_int.put("-", BLANK);
         this.int_to_char.put(BLANK, "-");
 
+        // Build dictionary for sudoku to cell conversion and vice versa
         for (int i = 1; i <= this.sudokuSize; i++) {
             this.int_to_char.put(i, maps[i - 1]);
             this.char_to_int.put(maps[i - 1], i);
@@ -79,7 +80,6 @@ public class Sudoku {
     public boolean sanityCheck() {
         // Check if the sudoku you're going to solve is correct
         // Check if the sudoku that you solved is correct
-        HashMap<String, Integer> cellCounter = new HashMap<String, Integer>();
         boolean sane = true;
 
         int item = BLANK;
@@ -111,9 +111,6 @@ public class Sudoku {
                 }
             }
         }
-//        if (sane)
-//            System.out.println("Valid Sudoku");
-
         return sane;
     }
 
@@ -132,6 +129,7 @@ public class Sudoku {
     }
 
     public int[] missingInPart(int r, int c, int missCount) {
+        // Returns array of missing numbers in a part - quad or nonet
 //        System.out.println(r + " " + c + " : " + missCount);
         int[] missing = new int[missCount];
         HashSet<Integer> present = new HashSet<>();
@@ -157,7 +155,7 @@ public class Sudoku {
     }
 
     public int missingInPartCount(int r, int c) {
-        // How many items are missing in a quad
+        // How many items are missing in a quad or nonet and so on
         int count = 0;
         for (int i = r * size; i < r * size + size; i++) {
             for (int j = c * size; j < c * size + size; j++) {
@@ -200,6 +198,4 @@ public class Sudoku {
         }
         return count;
     }
-
-
 }

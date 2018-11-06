@@ -103,7 +103,6 @@ public class FirstStrategySoduku extends Sudoku {
                 // Count the total number of missing items
                 if (a == sudokuSize) a = 0;  // because if missing item is zero a larger number is sent by the function
                 totalMissing += a;
-
             }
         }
 
