@@ -36,11 +36,11 @@ public class MinimumPossibilityCell extends Sudoku {
         // find the missing values for that quad
         // check which of the values are valid for each missing cell in that quad
 
-        int quadRow = Math.floorDiv(row, this.size);
-        int quadCol = Math.floorDiv(col, this.size);
+        int quadRow = Math.floorDiv(row, this.blockSize);
+        int quadCol = Math.floorDiv(col, this.blockSize);
 
-        int missingValueSize = this.missingInPartCount(quadRow, quadCol);
-        int[] expectedValues = this.missingInPart(quadRow, quadCol, missingValueSize);
+        int missingValueSize = this.missingInBlockCount(quadRow, quadCol);
+        int[] expectedValues = this.missingInBlock(quadRow, quadCol, missingValueSize);
 
         int validValueCount = 0;
         int validValue = -2;

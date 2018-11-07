@@ -92,9 +92,9 @@ public class FirstStrategySoduku extends Sudoku {
         int a;
         int totalMissing = 0;
         // Find the part of the sudoku with minimum missing pieces
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                a = missingInPartCount(i, j);
+        for (int i = 0; i < blockSize; i++) {
+            for (int j = 0; j < blockSize; j++) {
+                a = missingInBlockCount(i, j);
                 if (min > a) {
                     min = a;
                     row = i;
@@ -111,10 +111,10 @@ public class FirstStrategySoduku extends Sudoku {
 
         System.out.println("Minimum missing quad : " + row + " , " + col + " : " + min + " values");
         // These are problematic areas resolve them soon
-        int[] expectedValues = this.missingInPart(row, col, min);
+        int[] expectedValues = this.missingInBlock(row, col, min);
 
-        for (int i = row * size; i < row * size + size; i++) {
-            for (int j = col * size; j < col * size + size; j++) {
+        for (int i = row * blockSize; i < row * blockSize + blockSize; i++) {
+            for (int j = col * blockSize; j < col * blockSize + blockSize; j++) {
                 if (this.cells[i][j] < 0) {
                     this.validValuesForCell(i, j, expectedValues);
                 }

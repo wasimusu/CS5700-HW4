@@ -2,14 +2,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
-public class Sudoku {
+public class Sudoku implements SudokuBasic {
     protected int[][] cells;
     private HashMap<String, Integer> char_to_int = new HashMap<String, Integer>();
     private HashMap<Integer, String> int_to_char = new HashMap<Integer, String>();
     private String sudoku;
     private String charset;
     protected int sudokuSize;
-    protected int size; // square root of sudoku size
+    protected int blockSize; // square root of sudoku size
     protected int BLANK = -2;
 
     protected HashMap<Integer, Integer> minimumCells = new HashMap<Integer, Integer>();
@@ -28,7 +28,7 @@ public class Sudoku {
         this.minimumCells.put(16, 16);
         this.minimumCells.put(25, 25);
 
-        this.size = (int) Math.sqrt((double) sudokuSize);
+        this.blockSize = (int) Math.sqrt((double) sudokuSize);
     }
 
     protected boolean buildSoduko() {
@@ -128,14 +128,14 @@ public class Sudoku {
         return stringPuzzle;
     }
 
-    public int[] missingInPart(int r, int c, int missCount) {
+    public int[] missingInBlock(int r, int c, int missCount) {
         // Returns array of missing numbers in a part - quad or nonet
 //        System.out.println(r + " " + c + " : " + missCount);
         int[] missing = new int[missCount];
         HashSet<Integer> present = new HashSet<>();
         int index = 0;
-        for (int i = r * size; i < r * size + size; i++) {
-            for (int j = c * size; j < c * size + size; j++) {
+        for (int i = r * blockSize; i < r * blockSize + blockSize; i++) {
+            for (int j = c * blockSize; j < c * blockSize + blockSize; j++) {
                 if (this.cells[i][j] >= 0) {
                     present.add(this.cells[i][j]);
                     index++;
@@ -154,11 +154,11 @@ public class Sudoku {
         return missing;
     }
 
-    public int missingInPartCount(int r, int c) {
+    public int missingInBlockCount(int r, int c) {
         // How many items are missing in a quad or nonet and so on
         int count = 0;
-        for (int i = r * size; i < r * size + size; i++) {
-            for (int j = c * size; j < c * size + size; j++) {
+        for (int i = r * blockSize; i < r * blockSize + blockSize; i++) {
+            for (int j = c * blockSize; j < c * blockSize + blockSize; j++) {
                 if (this.cells[i][j] < 0) count++;
             }
         }

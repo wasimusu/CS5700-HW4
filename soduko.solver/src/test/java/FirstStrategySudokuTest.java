@@ -34,6 +34,7 @@ public class FirstStrategySudokuTest {
 
         FileReadCommand fileReadCommand = new FileReadCommand(filename);
 //        FirstStrategySoduku soduku = fileReadCommand.readPuzzle();
-        GuessACell soduku = fileReadCommand.readPuzzle();
+        GuessACell sudoku = fileReadCommand.readPuzzle();
+        sudoku.test();
     }
 }

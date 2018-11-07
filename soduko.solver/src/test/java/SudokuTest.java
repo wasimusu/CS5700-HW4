@@ -21,11 +21,11 @@ public class SudokuTest {
     }
 
     @Test
-    public void missingInPart() {
+    public void missingInBlock() {
     }
 
     @Test
-    public void missingInPartCount() {
+    public void missingInBlockCount() {
     }
 
     @Test

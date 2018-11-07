@@ -16,6 +16,14 @@ public class GuessACell extends MinimumPossibilityCell {
     private int guessRow = -1;
     private int guessCol = -1;
 
+    public void test() {
+        System.out.println(this.totalMissingCells());
+        for (int i = 0; i < this.sudokuSize; i++) {
+            System.out.println(this.missingInColCount(i));
+            System.out.println(this.missingInRowCount(i));
+        }
+    }
+
     public GuessACell(int sudokuSize, String map, String sudoku) {
         super(sudokuSize, map, sudoku);
     }
@@ -38,11 +46,11 @@ public class GuessACell extends MinimumPossibilityCell {
         for (int i = 0; i < this.sudokuSize; i++) {
             for (int j = 0; j < this.sudokuSize; j++) {
                 if (this.cells[i][j] == this.BLANK) {
-                    int quadRow = Math.floorDiv(i, this.size);
-                    int quadCol = Math.floorDiv(j, this.size);
+                    int quadRow = Math.floorDiv(i, this.blockSize);
+                    int quadCol = Math.floorDiv(j, this.blockSize);
 
-                    int missingValueSize = this.missingInPartCount(quadRow, quadCol);
-                    int[] expectedValues = this.missingInPart(quadRow, quadCol, missingValueSize);
+                    int missingValueSize = this.missingInBlockCount(quadRow, quadCol);
+                    int[] expectedValues = this.missingInBlock(quadRow, quadCol, missingValueSize);
 
                     int validValueCount = 0;
                     boolean isValid;
@@ -64,11 +72,11 @@ public class GuessACell extends MinimumPossibilityCell {
             }
         }
 
-        int quadRow = Math.floorDiv(guessRow, this.size);
-        int quadCol = Math.floorDiv(guessCol, this.size);
+        int quadRow = Math.floorDiv(guessRow, this.blockSize);
+        int quadCol = Math.floorDiv(guessCol, this.blockSize);
 
-        int missingValueSize = this.missingInPartCount(quadRow, quadCol);
-        int[] expectedValues = this.missingInPart(quadRow, quadCol, missingValueSize);
+        int missingValueSize = this.missingInBlockCount(quadRow, quadCol);
+        int[] expectedValues = this.missingInBlock(quadRow, quadCol, missingValueSize);
 
         Random rand = new Random();
         // nextInt as provided by Random is exclusive of the top value so you need to add 1
