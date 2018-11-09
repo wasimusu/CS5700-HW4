@@ -33,8 +33,11 @@ public class Sudoku implements SudokuBasic {
 
     protected boolean buildSoduko() {
         // returns true if the sudoku is valid else false
+        // Checks of invalid characters and invalid number of rows and columns
+        // Also calls sanity check to find repeatition of characters
+
         int missingItemCount = sudoku.length() - sudoku.replace("-", "").length();
-        System.out.println("Initializing a sudoku of size : " + this.sudokuSize);
+        boolean sane = true; // if the sudoku is valid or not
 
         if (missingItemCount < this.minimumCells.get(this.sudokuSize)) {
             System.out.println("Less number of missing elements than permitted.");
@@ -73,8 +76,7 @@ public class Sudoku implements SudokuBasic {
                 }
             }
         }
-
-        return true;
+        return this.sanityCheck();
     }
 
     public boolean sanityCheck() {
@@ -84,28 +86,24 @@ public class Sudoku implements SudokuBasic {
 
         int item = BLANK;
         for (int i = 0; i < this.sudokuSize; i++) {
+
             ArrayList<Integer> colCharset = new ArrayList<Integer>();
             ArrayList<Integer> rowCharset = new ArrayList<Integer>();
 
             for (int j = 0; j < this.sudokuSize; j++) {
+
                 item = cells[i][j]; // row
                 if (rowCharset.contains(item) && item != BLANK) {
-                    {
-                        System.out.println("Contains repeated item in row : " + i + " : " + item);
-                        sane = false;
-                        return sane;
-                    }
+                    System.out.println("Contains repeated item in row : " + i + " : " + item);
+                    return false;
                 } else {
                     rowCharset.add(item);
                 }
 
                 item = cells[j][i]; // col
                 if (colCharset.contains(item) && item != BLANK) {
-                    {
-                        System.out.println("Contains repeated item in column : " + j);
-                        sane = false;
-                        return sane;
-                    }
+                    System.out.println("Contains repeated item in column : " + j);
+                    return false;
                 } else {
                     colCharset.add(item);
                 }
@@ -174,7 +172,7 @@ public class Sudoku implements SudokuBasic {
             if (this.cells[r][i] < 0) count++;
         }
         if (count == 0) {
-            return this.sudokuSize;
+            {return this.sudokuSize;}
         } else return count;
     }
 

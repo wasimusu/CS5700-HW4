@@ -9,8 +9,8 @@ public class FileReadWriteCommand extends FileReadCommand {
     }
 
     public void execute() throws Exception{
-//        MinimumPossibilityCell sudoku = this.readPuzzle();
-        GuessACell sudoku = this.readPuzzle();
+//        MinimumPossibilityCell sudoku = this.readSudoku();
+        GuessACell sudoku = this.readSudoku();
         this.writePuzzle(sudoku);
     }
 

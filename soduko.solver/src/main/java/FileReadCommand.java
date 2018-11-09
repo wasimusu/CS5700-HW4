@@ -10,10 +10,10 @@ public class FileReadCommand implements Command {
     }
 
     public void execute() throws Exception {
-        this.readPuzzle();
+        this.readSudoku();
     }
 
-    public GuessACell readPuzzle() throws Exception {
+    public GuessACell readSudoku() throws Exception {
         File file = new File(this.inputFilename);
         BufferedReader reader = new BufferedReader(new FileReader(file));
         String line = "";
@@ -26,13 +26,12 @@ public class FileReadCommand implements Command {
 //        FirstStrategySoduku sudoku = new FirstStrategySoduku(sizePuzzle, charMap, puzzle);
 //        MinimumPossibilityCell sudoku = new MinimumPossibilityCell(sizePuzzle, charMap, puzzle);
         GuessACell sudoku = new GuessACell(sizePuzzle, charMap, puzzle);
-        boolean valid = sudoku.buildSoduko();
+//        boolean valid = sudoku.buildSoduko();
 
-        if (valid) {
-            sudoku.solve();
-//            sudoku.sanityCheck();
-            System.out.println(sudoku.toString());
-        }
+//        if (valid) {
+//            sudoku.solve();
+//            System.out.println(sudoku.toString());
+//        }
 
         // solve and display also
 //        return new FirstStrategySoduku(sizePuzzle, charMap, puzzle);

@@ -1,12 +1,15 @@
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Random;
 
 public class GuessACell extends MinimumPossibilityCell {
 
     private int previouslyMissing = 10000000;
-    private int currentlyMissing = 100000000;
+    private int currentlyMissing = 10000000;
     private int[][] snapshotSudoku;
     private boolean firstGuess = true;
+
     // We need a snapshot of the sudoku to reverse our guessing decision
     // Guess index
 
@@ -15,14 +18,10 @@ public class GuessACell extends MinimumPossibilityCell {
     private int samePosGuessCount = 0;
     private int guessRow = -1;
     private int guessCol = -1;
+    private int guessCount = 0;
 
-    public void test() {
-        System.out.println(this.totalMissingCells());
-        for (int i = 0; i < this.sudokuSize; i++) {
-            System.out.println(this.missingInColCount(i));
-            System.out.println(this.missingInRowCount(i));
-        }
-    }
+    private HashSet<String> guessPositions = new HashSet<String>();
+    private HashMap<String, int[][]> snapshots = new HashMap<String, int[][]>();
 
     public GuessACell(int sudokuSize, String map, String sudoku) {
         super(sudokuSize, map, sudoku);
@@ -31,17 +30,10 @@ public class GuessACell extends MinimumPossibilityCell {
     public void restoreToSaneState() {
         System.out.println("Restoring to a sane state");
         this.cells = this.snapshotSudoku;
+        System.out.println(this.toString());
     }
 
-    public void guessACell() {
-        // Find the cell with the minimum expected values in the sudoku
-        // Guess it.
-        // Keep track of it
-        // Solve using minimal possibility again
-        if (this.firstGuess) this.snapshotSudoku = this.cells;
-
-
-        // And relish control back to solve()
+    public void guessPositions(){
         int minValidCount = 1000;
         for (int i = 0; i < this.sudokuSize; i++) {
             for (int j = 0; j < this.sudokuSize; j++) {
@@ -67,10 +59,27 @@ public class GuessACell extends MinimumPossibilityCell {
                         guessRow = i;
                         guessCol = j;
                     }
-
                 }
             }
         }
+    }
+
+    public void guessACell() {
+        // Find the cell with the minimum expected values in the sudoku
+        // Guess it.
+        // Keep track of it
+        // Solve using minimal possibility again
+        if (this.guessCount==1) {
+            this.snapshotSudoku = this.cells.clone();
+            System.out.println("Snapshot saved");
+            System.out.print(this.toString());
+        }
+        guessCount++;
+
+        System.out.println("Your guess count : " + guessCount);
+        // And relish control back to solve()
+
+        this.guessPositions();
 
         int quadRow = Math.floorDiv(guessRow, this.blockSize);
         int quadCol = Math.floorDiv(guessCol, this.blockSize);
@@ -81,23 +90,39 @@ public class GuessACell extends MinimumPossibilityCell {
         Random rand = new Random();
         // nextInt as provided by Random is exclusive of the top value so you need to add 1
         // int randomNum = rand.nextInt((max - min) + 1) + min;
-        int random = rand.nextInt(missingValueSize);
+
+        int random = -1;
+        HashSet<Integer> alreadyGuess = new HashSet<Integer>();
+        while (true) {
+            random = rand.nextInt(missingValueSize);
+            // If this is not the first time you're guessing this value, guess another number. I know it is wrong guess.
+            if (alreadyGuess.size() == expectedValues.length) break; // You guessed enough, give up
+            if (alreadyGuess.contains(random)) continue;
+
+            alreadyGuess.add(random);
+            System.out.println(expectedValues[random]);
+            if (this.validForCell(guessRow, guessCol, expectedValues[random])) break;
+        }
         this.cells[guessRow][guessCol] = expectedValues[random];
         System.out.println("Guess : " + guessRow + "," + guessCol + " : " + expectedValues[random]);
+        String coordinate = String.valueOf(guessRow) + "#" + String.valueOf(guessCol);
 
-        firstGuess = false;
-
+        guessPositions.add(coordinate);
+        snapshots.put(coordinate, this.cells);
+        //        System.out.println(this.toString());
     }
 
     public void solve() {
         this.minimalOption();
         int missingCells = this.totalMissingCells();
         boolean sane = this.sanityCheck();
-        if (missingCells == 0 && sane == true) return;
+        if (missingCells == 0 && sane) return;
         else {
             if (!sane) this.restoreToSaneState();
-            guessACell();
-            solve();
+            if (guessCount < 10) {
+                guessACell();
+                solve();
+            }
         }
     }
 
