@@ -14,9 +14,6 @@ public class Sudoku implements SudokuBasic {
 
     protected HashMap<Integer, Integer> minimumCells = new HashMap<Integer, Integer>();
 
-    public void solve(String map, String sudoku) {
-    }
-
     public Sudoku(int sudokuSize, String map, String sudoku) {
         cells = new int[sudokuSize][sudokuSize];
         this.charset = map;
@@ -30,6 +27,20 @@ public class Sudoku implements SudokuBasic {
 
         this.blockSize = (int) Math.sqrt((double) sudokuSize);
     }
+
+    // This is the solve sudoku template
+    public void solveSudoku(String map, String sudoku) {
+        boolean validSudoku = this.buildSoduko(); // build sudoku from the map, sudoku
+        // If the sudoku is valid solve only then
+        if (validSudoku) {
+            boolean sane = this.sanityCheck(); // check if the sudoku is correct
+            if (sane) this.solve(map, sudoku); // if boolean is sane
+        }
+    }
+
+    public void solve(String map, String sudoku) {
+    }
+
 
     protected boolean buildSoduko() {
         // returns true if the sudoku is valid else false
@@ -112,7 +123,6 @@ public class Sudoku implements SudokuBasic {
         return sane;
     }
 
-
     public String toString() {
         // Convert the solved sudoku to string to display on console or write to file
         String stringPuzzle = "";
@@ -172,7 +182,9 @@ public class Sudoku implements SudokuBasic {
             if (this.cells[r][i] < 0) count++;
         }
         if (count == 0) {
-            {return this.sudokuSize;}
+            {
+                return this.sudokuSize;
+            }
         } else return count;
     }
 

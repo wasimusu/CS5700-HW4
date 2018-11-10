@@ -7,7 +7,6 @@ public class GuessACell extends MinimumPossibilityCell {
 
     private int previouslyMissing = 10000000;
     private int currentlyMissing = 10000000;
-    private int[][] snapshotSudoku;
     private boolean firstGuess = true;
 
     // We need a snapshot of the sudoku to reverse our guessing decision
@@ -29,11 +28,14 @@ public class GuessACell extends MinimumPossibilityCell {
 
     public void restoreToSaneState() {
         System.out.println("Restoring to a sane state");
-        this.cells = this.snapshotSudoku;
+//        this.cells = this.snapshotSudoku;
+
+        String coordinate = String.valueOf(guessRow) + "#" + String.valueOf(guessCol);
+        this.cells = this.snapshots.get(coordinate);
         System.out.println(this.toString());
     }
 
-    public void guessPositions(){
+    public void guessPositions() {
         int minValidCount = 1000;
         for (int i = 0; i < this.sudokuSize; i++) {
             for (int j = 0; j < this.sudokuSize; j++) {
@@ -69,11 +71,6 @@ public class GuessACell extends MinimumPossibilityCell {
         // Guess it.
         // Keep track of it
         // Solve using minimal possibility again
-        if (this.guessCount==1) {
-            this.snapshotSudoku = this.cells.clone();
-            System.out.println("Snapshot saved");
-            System.out.print(this.toString());
-        }
         guessCount++;
 
         System.out.println("Your guess count : " + guessCount);
@@ -100,16 +97,23 @@ public class GuessACell extends MinimumPossibilityCell {
             if (alreadyGuess.contains(random)) continue;
 
             alreadyGuess.add(random);
-            System.out.println(expectedValues[random]);
             if (this.validForCell(guessRow, guessCol, expectedValues[random])) break;
         }
+        System.out.println(this.validForCell(guessRow, guessCol, expectedValues[random]));
+        System.out.println("Good state : " + this.sanityCheck());
+
+        // Before you change anything just make a snapshot
+        String coordinate = String.valueOf(guessRow) + "#" + String.valueOf(guessCol);
+        if (!guessPositions.contains(coordinate)) {
+            guessPositions.add(coordinate);
+            snapshots.put(coordinate, this.cells);
+            System.out.println("Adding snapshot for position " + coordinate);
+            System.out.println(this.toString());
+        }
+
+        // Update the cell with guessed values
         this.cells[guessRow][guessCol] = expectedValues[random];
         System.out.println("Guess : " + guessRow + "," + guessCol + " : " + expectedValues[random]);
-        String coordinate = String.valueOf(guessRow) + "#" + String.valueOf(guessCol);
-
-        guessPositions.add(coordinate);
-        snapshots.put(coordinate, this.cells);
-        //        System.out.println(this.toString());
     }
 
     public void solve() {
