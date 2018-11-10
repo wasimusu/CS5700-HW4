@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
@@ -7,18 +6,15 @@ public class GuessACell extends MinimumPossibilityCell {
 
     private int previouslyMissing = 10000000;
     private int currentlyMissing = 10000000;
-    private boolean firstGuess = true;
 
     // We need a snapshot of the sudoku to reverse our guessing decision
-    // Guess index
-
     // Guess framework and data containers
-    private ArrayList<Integer> guesses;
-    private int samePosGuessCount = 0;
     private int guessRow = -1;
     private int guessCol = -1;
+    private int firstGuessRow = -1;
+    private int firstGuessCol = -1;
     private int guessCount = 0;
-
+    private int[][] snapshot;
     private HashSet<String> guessPositions = new HashSet<String>();
     private HashMap<String, int[][]> snapshots = new HashMap<String, int[][]>();
 
@@ -26,16 +22,34 @@ public class GuessACell extends MinimumPossibilityCell {
         super(sudokuSize, map, sudoku);
     }
 
-    public void restoreToSaneState() {
-        System.out.println("Restoring to a sane state");
-//        this.cells = this.snapshotSudoku;
 
-        String coordinate = String.valueOf(guessRow) + "#" + String.valueOf(guessCol);
-        this.cells = this.snapshots.get(coordinate);
+    public void solve() {
+        this.minimalOption(); // fill all the positions that can be deterministically filled
+        int missingCells = this.totalMissingCells();
+        boolean sane = this.sanityCheck();
+        if (missingCells == 0 && sane) return;
+        else {
+            if (!sane) this.restoreToSaneState();
+            if (guessCount < 100) {
+                guessACell();
+                solve();
+            } else {
+                System.out.println("Stopping without solving");
+            }
+        }
+    }
+
+    public void restoreToSaneState() {
+        String coordinate = String.valueOf(firstGuessRow) + "#" + String.valueOf(firstGuessCol);
+        System.out.println("Restoring to a sane state " + coordinate);
+        System.out.println(this.toString());
+//        this.cells = this.snapshots.get(coordinate);
+        this.cells = this.snapshot.clone();
         System.out.println(this.toString());
     }
 
     public void guessPositions() {
+        // Find positions with minimum valid values so that guessing is easy
         int minValidCount = 1000;
         for (int i = 0; i < this.sudokuSize; i++) {
             for (int j = 0; j < this.sudokuSize; j++) {
@@ -73,10 +87,11 @@ public class GuessACell extends MinimumPossibilityCell {
         // Solve using minimal possibility again
         guessCount++;
 
-        System.out.println("Your guess count : " + guessCount);
-        // And relish control back to solve()
-
-        this.guessPositions();
+        this.guessPositions(); // Get the cell positions
+        if (guessCount == 1) {
+            this.firstGuessCol = guessCol;
+            this.firstGuessRow = guessRow;
+        }
 
         int quadRow = Math.floorDiv(guessRow, this.blockSize);
         int quadCol = Math.floorDiv(guessCol, this.blockSize);
@@ -99,14 +114,30 @@ public class GuessACell extends MinimumPossibilityCell {
             alreadyGuess.add(random);
             if (this.validForCell(guessRow, guessCol, expectedValues[random])) break;
         }
-        System.out.println(this.validForCell(guessRow, guessCol, expectedValues[random]));
-        System.out.println("Good state : " + this.sanityCheck());
+
+        this.cells[guessRow][guessCol] = expectedValues[random];
+        boolean state = this.sanityCheck();
+        if (!state) {
+            int[] conflictPos = this.getConflictingCell();
+            System.out.println(guessRow + "," + guessCol + "\t" + conflictPos[0] + "," + conflictPos[1] + " : " + expectedValues[random]);
+            this.restoreToSaneState();  // restore to a sane state
+            this.guessACell();  // and try guessing again
+        }
+        this.cells[guessRow][guessCol] = this.BLANK;  // undo the state for adding snapshot
 
         // Before you change anything just make a snapshot
         String coordinate = String.valueOf(guessRow) + "#" + String.valueOf(guessCol);
         if (!guessPositions.contains(coordinate)) {
             guessPositions.add(coordinate);
-            snapshots.put(coordinate, this.cells);
+            snapshots.put(coordinate, this.cells.clone());
+
+            if (guessCount == 1) {
+                snapshot = new int[this.sudokuSize][this.sudokuSize];
+                for (int i = 0; i < this.sudokuSize; i++) {
+                    System.arraycopy(this.cells[i], 0, this.snapshot[i], 0, this.sudokuSize);
+                }
+            }
+
             System.out.println("Adding snapshot for position " + coordinate);
             System.out.println(this.toString());
         }
@@ -114,20 +145,6 @@ public class GuessACell extends MinimumPossibilityCell {
         // Update the cell with guessed values
         this.cells[guessRow][guessCol] = expectedValues[random];
         System.out.println("Guess : " + guessRow + "," + guessCol + " : " + expectedValues[random]);
-    }
-
-    public void solve() {
-        this.minimalOption();
-        int missingCells = this.totalMissingCells();
-        boolean sane = this.sanityCheck();
-        if (missingCells == 0 && sane) return;
-        else {
-            if (!sane) this.restoreToSaneState();
-            if (guessCount < 10) {
-                guessACell();
-                solve();
-            }
-        }
     }
 
     public void minimalOption() {

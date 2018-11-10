@@ -153,6 +153,4 @@ public class FirstStrategySoduku extends Sudoku {
             System.out.println("Did not apply any value");
         }
     }
-
-
 }

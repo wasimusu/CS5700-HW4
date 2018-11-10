@@ -123,6 +123,50 @@ public class Sudoku implements SudokuBasic {
         return sane;
     }
 
+    public int[] getConflictingCell() {
+        // Check if the sudoku you're going to solve is correct
+        // Check if the sudoku that you solved is correct
+
+        int conflictRow = -1;
+        int conflictCol = -1;
+        int item = BLANK;
+        for (int i = 0; i < this.sudokuSize; i++) {
+            ArrayList<Integer> colCharset = new ArrayList<Integer>();
+            ArrayList<Integer> rowCharset = new ArrayList<Integer>();
+
+            for (int j = 0; j < this.sudokuSize; j++) {
+                item = cells[i][j]; // row
+                if (rowCharset.contains(item) && item != BLANK) {
+                    System.out.println("Contains repeated item in row : " + i + " : " + item);
+                    // So we detected a conflict, see which position earlier in this row had this same value
+                    for (int r = 0; r < this.sudokuSize; r++) {
+                        if (this.cells[r][j] == item) {
+                            conflictRow = j;
+                        }
+                    }
+                    return new int[]{i, conflictRow};
+                } else {
+                    rowCharset.add(item);
+                }
+
+                item = cells[j][i]; // col
+                if (colCharset.contains(item) && item != BLANK) {
+                    System.out.println("Contains repeated item in column : " + j);
+                    // So we detected a conflict, see which position earlier in this row had this same value
+                    for (int c = 0; c < this.sudokuSize; c++) {
+                        if (this.cells[j][c] == item) {
+                            conflictCol = c;
+                        }
+                    }
+                    return new int[]{j, conflictCol};
+                } else {
+                    colCharset.add(item);
+                }
+            }
+        }
+        return new int[]{conflictRow, conflictCol};
+    }
+
     public String toString() {
         // Convert the solved sudoku to string to display on console or write to file
         String stringPuzzle = "";
