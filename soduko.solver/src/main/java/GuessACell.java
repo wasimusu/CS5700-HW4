@@ -4,9 +4,6 @@ import java.util.Random;
 
 public class GuessACell extends MinimumPossibilityCell {
 
-    private int previouslyMissing = 10000000;
-    private int currentlyMissing = 10000000;
-
     // We need a snapshot of the sudoku to reverse our guessing decision
     // Guess framework and data containers
     private int guessRow = -1;
@@ -21,7 +18,6 @@ public class GuessACell extends MinimumPossibilityCell {
     public GuessACell(int sudokuSize, String map, String sudoku) {
         super(sudokuSize, map, sudoku);
     }
-
 
     public void solve() {
         this.minimalOption(); // fill all the positions that can be deterministically filled
@@ -145,40 +141,6 @@ public class GuessACell extends MinimumPossibilityCell {
         // Update the cell with guessed values
         this.cells[guessRow][guessCol] = expectedValues[random];
         System.out.println("Guess : " + guessRow + "," + guessCol + " : " + expectedValues[random]);
-    }
-
-    public void minimalOption() {
-        // Loop through the cells
-        // Find the possible values for missing cells
-        // If it's one - just fill it
-        // for each cell determine its quad to determine expected quad values
-
-        // If there is no change between two iterations, return
-        this.currentlyMissing = this.totalMissingCells();
-        System.out.println("Empty Cells: " + this.currentlyMissing);
-        if (this.currentlyMissing == this.previouslyMissing) {
-            return;
-        }
-        this.previouslyMissing = this.currentlyMissing;
-
-        // Find the part of the sudoku with minimum missing pieces
-        // Find expected value for each cell
-        for (int i = 0; i < this.sudokuSize; i++) {
-            for (int j = 0; j < this.sudokuSize; j++) {
-                if (this.cells[i][j] == this.BLANK) expectedValueForCell(i, j);
-            }
-        }
-        minimalOption();
-    }
-
-    public boolean validForCell(int row, int col, int value) {
-        // Check row and col to determine if a value is valid for a particular cell
-        boolean valid = true;
-        for (int i = 0; i < sudokuSize; i++) {
-            if (value == this.cells[row][i]) valid = false;
-            if (value == this.cells[i][col]) valid = false;
-        }
-        return valid;
     }
 
 }

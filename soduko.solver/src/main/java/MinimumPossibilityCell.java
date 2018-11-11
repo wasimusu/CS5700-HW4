@@ -9,7 +9,11 @@ public class MinimumPossibilityCell extends Sudoku {
         super(sudokuSize, map, sudoku);
     }
 
-    public void solve() {
+    public void solve(){
+        this.minimalOption();
+    }
+
+    public void minimalOption() {
         // Loop through the cells
         // Find the possible values for missing cells
         // If it's one - just fill it
@@ -25,13 +29,13 @@ public class MinimumPossibilityCell extends Sudoku {
         // Find expected value for each cell
         for (int i = 0; i < this.sudokuSize; i++) {
             for (int j = 0; j < this.sudokuSize; j++) {
-                if (this.cells[i][j] == this.BLANK) expectedValueForCell(i, j);
+                if (this.cells[i][j] == this.BLANK) fillCell(i, j);
             }
         }
-        solve();
+        minimalOption();
     }
 
-    public void expectedValueForCell(int row, int col) {
+    public void fillCell(int row, int col) {
         // determine the quad from the row, col
         // find the missing values for that quad
         // check which of the values are valid for each missing cell in that quad
@@ -58,14 +62,5 @@ public class MinimumPossibilityCell extends Sudoku {
         }
     }
 
-    public boolean validForCell(int row, int col, int value) {
-        // Check row and col to determine if a value is valid for a particular cell
-        boolean valid = true;
-        for (int i = 0; i < sudokuSize; i++) {
-            if (value == this.cells[row][i]) valid = false;
-            if (value == this.cells[i][col]) valid = false;
-        }
-        return valid;
-    }
 
 }

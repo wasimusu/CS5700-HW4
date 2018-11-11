@@ -11,13 +11,13 @@ public class Sudoku implements SudokuBasic {
     protected int sudokuSize;
     protected int blockSize; // square root of sudoku size
     protected int BLANK = -2;
-
+    private long executionTime = 0; // total time of execution
     protected HashMap<Integer, Integer> minimumCells = new HashMap<Integer, Integer>();
 
     public Sudoku(int sudokuSize, String map, String sudoku) {
         cells = new int[sudokuSize][sudokuSize];
         this.charset = map;
-        this.sudoku = sudoku;
+        this.sudoku = sudoku;  // the user input
         this.sudokuSize = sudokuSize;
 
         this.minimumCells.put(4, 4);
@@ -30,12 +30,15 @@ public class Sudoku implements SudokuBasic {
 
     // This is the solve sudoku template
     public void solveSudoku(String map, String sudoku) {
+        long startTime = System.currentTimeMillis();
         boolean validSudoku = this.buildSoduko(); // build sudoku from the map, sudoku
         // If the sudoku is valid solve only then
         if (validSudoku) {
             boolean sane = this.sanityCheck(); // check if the sudoku is correct
             if (sane) this.solve(map, sudoku); // if boolean is sane
         }
+        long endTime = System.currentTimeMillis();
+        this.executionTime = endTime - startTime;
     }
 
     public void solve(String map, String sudoku) {
@@ -251,5 +254,30 @@ public class Sudoku implements SudokuBasic {
             }
         }
         return count;
+    }
+
+    public boolean validForCell(int row, int col, int value) {
+        // Check row and col to determine if a value is valid for a particular cell
+        boolean valid = true;
+        for (int i = 0; i < sudokuSize; i++) {
+            if (value == this.cells[row][i]) {
+                valid = false;
+                break;
+            }
+            if (value == this.cells[i][col]) {
+                valid = false;
+                break;
+            }
+        }
+        return valid;
+    }
+
+    public String getSummary(){
+        // This is the output that is written to output file
+        return "Input Sudoku :\n" +
+                this.sudoku + System.lineSeparator() + "\n" +
+                "Output Sudoku :\n" +
+                this.toString() + "\n\n" +
+                "Execution Time : " + String.valueOf(this.executionTime) + System.lineSeparator();
     }
 }
