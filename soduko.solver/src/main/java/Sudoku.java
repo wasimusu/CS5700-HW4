@@ -28,8 +28,8 @@ public class Sudoku implements SudokuBasic {
         this.blockSize = (int) Math.sqrt((double) sudokuSize);
     }
 
-    // This is the solve sudoku template
-    public void solveSudoku(String map, String sudoku) {
+    // This is the template method for solving sudoku. This can't be overridden
+    public final void solveSudoku(String map, String sudoku) {
         long startTime = System.currentTimeMillis();
         boolean validSudoku = this.buildSoduko(); // build sudoku from the map, sudoku
         // If the sudoku is valid solve only then

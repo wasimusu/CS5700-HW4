@@ -37,10 +37,11 @@ public class GuessACell extends MinimumPossibilityCell {
 
     public void restoreToSaneState() {
         String coordinate = String.valueOf(firstGuessRow) + "#" + String.valueOf(firstGuessCol);
-//        System.out.println("Before Restoring to a sane state " + coordinate);
-//        System.out.println(this.toString());
+        // This is the right way of copying array values in java. This copies value not reference
+        for (int i = 0; i < this.sudokuSize; i++) {
+            this.cells[i] = this.snapshot[i].clone();
+        }
 
-        this.cells = this.snapshot;
         System.out.println("After Restoring to a sane state " + coordinate);
         System.out.println(this.toString());
     }
@@ -126,11 +127,11 @@ public class GuessACell extends MinimumPossibilityCell {
         String coordinate = String.valueOf(guessRow) + "#" + String.valueOf(guessCol);
         if (!guessPositions.contains(coordinate)) {
             guessPositions.add(coordinate);
-            snapshots.put(coordinate, this.cells.clone());
+//            snapshots.put(coordinate, this.cells.clone());
 
             if (guessCount == 1) {
-                System.out.println("Khushi ko khabar. we're defining snapshot...........................");
                 snapshot = new int[this.sudokuSize][this.sudokuSize];
+                // This is the right way of copying array values in java. This copies value not reference
                 for (int i = 0; i < this.sudokuSize; i++) {
                     this.snapshot[i] = this.cells[i].clone();
                 }
