@@ -183,25 +183,22 @@ public class Sudoku implements SudokuBasic {
 
     public int[] missingInBlock(int r, int c, int missCount) {
         // Returns array of missing numbers in a part - quad or nonet
-//        System.out.println(r + " " + c + " : " + missCount);
-        int[] missing = new int[missCount];
-        HashSet<Integer> present = new HashSet<>();
-        int index = 0;
+        // missing contains all the possible values
+        HashSet<Integer> missingHash = new HashSet<>();
+        for (int i = 1; i <= this.sudokuSize; i++)
+            missingHash.add(i);
+
         for (int i = r * blockSize; i < r * blockSize + blockSize; i++) {
             for (int j = c * blockSize; j < c * blockSize + blockSize; j++) {
-                if (this.cells[i][j] >= 0) {
-                    present.add(this.cells[i][j]);
-                    index++;
-                }
+                if (missingHash.contains(cells[i][j])) missingHash.remove(cells[i][j]);
             }
         }
 
-        index = 0;
-        for (int i = 1; i <= sudokuSize; i++) {
-            if (!present.contains(i)) {
-                missing[index] = i;
-                index++;
-            }
+        int[] missing = new int[missingHash.size()];
+        int index = 0;
+        for (int num : missingHash) {
+            missing[index] = num;
+            index++;
         }
 
         return missing;
@@ -270,7 +267,7 @@ public class Sudoku implements SudokuBasic {
         return valid;
     }
 
-    public String getSummary(){
+    public String getSummary() {
         // This is the output that is written to output file
         return "Input Sudoku :\n" +
                 this.sudoku + System.lineSeparator() + "\n" +

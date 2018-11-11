@@ -42,8 +42,8 @@ public class GuessACell extends MinimumPossibilityCell {
             this.cells[i] = this.snapshot[i].clone();
         }
 
-        System.out.println("After Restoring to a sane state " + coordinate);
-        System.out.println(this.toString());
+//        System.out.println("After Restoring to a sane state " + coordinate);
+//        System.out.println(this.toString());
     }
 
     public void guessPositions() {
@@ -137,8 +137,8 @@ public class GuessACell extends MinimumPossibilityCell {
                 }
             }
 
-            System.out.println("Adding snapshot for position " + coordinate);
-            System.out.println(this.toString());
+//            System.out.println("Adding snapshot for position " + coordinate);
+//            System.out.println(this.toString());
         }
 
         // Update the cell with guessed values
