@@ -19,11 +19,11 @@ public class FirstStrategySudokuTest {
 
 //        String file = "Puzzle-16x16-0001.txt"; // valid - solved
 //        String file = "Puzzle-25x25-0101.txt"; // valid - solved
-//        String file = "Puzzle-4x4-0001.txt";  // valid
+//        String file = "Puzzle-4x4-0001.txt";  // valid - solved using blocks
 //        String file = "Puzzle-9x9-0002.txt"; // valid - solved
 //        String file = "Puzzle-9x9-0001.txt"; // valid - solved
 //        String file = "Puzzle-4x4-0201.txt";  // valid - solved
-//        String file = "Puzzle-4x4-0101.txt";  // valid - solved
+//        String file = "Puzzle-4x4-0101.txt";  // valid - solved - blocks
 //        String file = "Puzzle-25x25-0101.txt"; // valid - solved
 //        String file = "Puzzle-16x16-0102.txt"; // valid - solved
 
@@ -40,7 +40,7 @@ public class FirstStrategySudokuTest {
         String filename = Paths.get(path, file).toString();
 
         FileReadCommand fileReadCommand = new FileReadCommand(filename);
-        GuessACell sudoku = fileReadCommand.readSudoku();
+        Blocks sudoku = fileReadCommand.readSudoku();
         sudoku.buildSoduko();
         sudoku.solve();
 

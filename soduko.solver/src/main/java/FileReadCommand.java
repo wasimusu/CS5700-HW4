@@ -13,7 +13,7 @@ public class FileReadCommand implements Command {
         this.readSudoku();
     }
 
-    public GuessACell readSudoku() throws Exception {
+    public Blocks readSudoku() throws Exception {
         File file = new File(this.inputFilename);
         BufferedReader reader = new BufferedReader(new FileReader(file));
         String line = "";
@@ -23,6 +23,6 @@ public class FileReadCommand implements Command {
         while ((line = reader.readLine()) != null)
             puzzle = puzzle.concat(line + System.lineSeparator());
 
-        return new GuessACell(sizePuzzle, charMap, puzzle);
+        return new Blocks(sizePuzzle, charMap, puzzle);
     }
 }

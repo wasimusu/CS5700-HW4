@@ -190,7 +190,11 @@ public class Sudoku implements SudokuBasic {
 
         for (int i = r * blockSize; i < r * blockSize + blockSize; i++) {
             for (int j = c * blockSize; j < c * blockSize + blockSize; j++) {
-                if (missingHash.contains(cells[i][j])) missingHash.remove(cells[i][j]);
+                int value = cells[i][j];
+                if (missingHash.contains(value)) {
+                    missingHash.remove(value);
+//                    System.out.println(value + " present  " + i + "," + j);
+                }
             }
         }
 
@@ -200,6 +204,9 @@ public class Sudoku implements SudokuBasic {
             missing[index] = num;
             index++;
         }
+
+        System.out.println(r + "," + c + " : " + missing[0]);
+        System.out.println(this.toString());
 
         return missing;
     }

@@ -25,7 +25,7 @@ public class MinimumPossibilityCell extends Sudoku {
         if (this.currentlyMissing == this.previouslyMissing || this.currentlyMissing == 0) return;
         this.previouslyMissing = this.currentlyMissing;
 
-        // Find the part of the sudoku with minimum missing pieces
+        // Find the block of the sudoku with minimum missing pieces
         // Find expected value for each cell
         for (int i = 0; i < this.sudokuSize; i++) {
             for (int j = 0; j < this.sudokuSize; j++) {
@@ -36,7 +36,7 @@ public class MinimumPossibilityCell extends Sudoku {
     }
 
     public void fillCell(int row, int col) {
-        // determine the quad from the row, col
+        // determine the block from the row, col
         // find the missing values for that quad
         // check which of the values are valid for each missing cell in that quad
 
