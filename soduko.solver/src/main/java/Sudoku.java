@@ -96,8 +96,6 @@ public class Sudoku implements SudokuBasic {
     public boolean sanityCheck() {
         // Check if the sudoku you're going to solve is correct
         // Check if the sudoku that you solved is correct
-        boolean sane = true;
-
         int item = BLANK;
         for (int i = 0; i < this.sudokuSize; i++) {
 
@@ -123,7 +121,7 @@ public class Sudoku implements SudokuBasic {
                 }
             }
         }
-        return sane;
+        return true;
     }
 
     public int[] getConflictingCell() {
@@ -209,7 +207,7 @@ public class Sudoku implements SudokuBasic {
         return missing;
     }
 
-    public int missingInBlockCount(int r, int c) {
+    public int getMissingInBlockCount(int r, int c) {
         // How many items are missing in a quad or nonet and so on
         int count = 0;
         for (int i = r * blockSize; i < r * blockSize + blockSize; i++) {
@@ -222,7 +220,7 @@ public class Sudoku implements SudokuBasic {
         } else return count;
     }
 
-    public int missingInRowCount(int r) {
+    public int getMissingInRowCount(int r) {
         // No of missing item in given row
         int count = 0;
         for (int i = 0; i < this.sudokuSize; i++) {
@@ -235,7 +233,7 @@ public class Sudoku implements SudokuBasic {
         } else return count;
     }
 
-    public int missingInColCount(int c) {
+    public int getMissingInColCount(int c) {
         // No of missing item in given col
         int count = 0;
         for (int i = 0; i < this.sudokuSize; i++) {
@@ -246,7 +244,7 @@ public class Sudoku implements SudokuBasic {
         } else return count;
     }
 
-    public int totalMissingCells() {
+    public int getTotalMissingCells() {
         int count = 0;
         for (int i = 0; i < this.sudokuSize; i++) {
             for (int j = 0; j < this.sudokuSize; j++) {
@@ -256,7 +254,7 @@ public class Sudoku implements SudokuBasic {
         return count;
     }
 
-    public boolean validForCell(int row, int col, int value) {
+    public boolean isValidForCell(int row, int col, int value) {
         // Check row and col to determine if a value is valid for a particular cell
         boolean valid = true;
         for (int i = 0; i < sudokuSize; i++) {

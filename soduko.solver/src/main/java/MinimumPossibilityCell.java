@@ -20,7 +20,7 @@ public class MinimumPossibilityCell extends Sudoku {
         // for each cell determine its quad to determine expected quad values
 
         // If there is no change between two iterations, return
-        this.currentlyMissing = this.totalMissingCells();
+        this.currentlyMissing = this.getTotalMissingCells();
         System.out.println("Empty Cells: " + this.currentlyMissing);
         if (this.currentlyMissing == this.previouslyMissing || this.currentlyMissing == 0) return;
         this.previouslyMissing = this.currentlyMissing;
@@ -43,14 +43,14 @@ public class MinimumPossibilityCell extends Sudoku {
         int quadRow = Math.floorDiv(row, this.blockSize);
         int quadCol = Math.floorDiv(col, this.blockSize);
 
-        int missingValueSize = this.missingInBlockCount(quadRow, quadCol);
+        int missingValueSize = this.getMissingInBlockCount(quadRow, quadCol);
         int[] expectedValues = this.missingInBlock(quadRow, quadCol, missingValueSize);
 
         int validValueCount = 0;
         int validValue = -2;
         boolean isValid;
         for (int value : expectedValues) {
-            isValid = this.validForCell(row, col, value);
+            isValid = this.isValidForCell(row, col, value);
             if (isValid) {
                 validValueCount += 1;
                 validValue = value;

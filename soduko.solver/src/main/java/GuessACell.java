@@ -21,7 +21,7 @@ public class GuessACell extends MinimumPossibilityCell {
 
     public void solve() {
         this.minimalOption(); // fill all the positions that can be deterministically filled
-        int missingCells = this.totalMissingCells();
+        int missingCells = this.getTotalMissingCells();
         boolean sane = this.sanityCheck();
         if (missingCells == 0 && sane) return;
         else {
@@ -37,10 +37,11 @@ public class GuessACell extends MinimumPossibilityCell {
 
     public void restoreToSaneState() {
         String coordinate = String.valueOf(firstGuessRow) + "#" + String.valueOf(firstGuessCol);
-        System.out.println("Restoring to a sane state " + coordinate);
-        System.out.println(this.toString());
-//        this.cells = this.snapshots.get(coordinate);
-        this.cells = this.snapshot.clone();
+//        System.out.println("Before Restoring to a sane state " + coordinate);
+//        System.out.println(this.toString());
+
+        this.cells = this.snapshot;
+        System.out.println("After Restoring to a sane state " + coordinate);
         System.out.println(this.toString());
     }
 
@@ -53,13 +54,13 @@ public class GuessACell extends MinimumPossibilityCell {
                     int quadRow = Math.floorDiv(i, this.blockSize);
                     int quadCol = Math.floorDiv(j, this.blockSize);
 
-                    int missingValueSize = this.missingInBlockCount(quadRow, quadCol);
+                    int missingValueSize = this.getMissingInBlockCount(quadRow, quadCol);
                     int[] expectedValues = this.missingInBlock(quadRow, quadCol, missingValueSize);
 
                     int validValueCount = 0;
                     boolean isValid;
                     for (int value : expectedValues) {
-                        isValid = this.validForCell(i, j, value);
+                        isValid = this.isValidForCell(i, j, value);
                         if (isValid) {
                             validValueCount += 1;
                         }
@@ -92,7 +93,7 @@ public class GuessACell extends MinimumPossibilityCell {
         int quadRow = Math.floorDiv(guessRow, this.blockSize);
         int quadCol = Math.floorDiv(guessCol, this.blockSize);
 
-        int missingValueSize = this.missingInBlockCount(quadRow, quadCol);
+        int missingValueSize = this.getMissingInBlockCount(quadRow, quadCol);
         int[] expectedValues = this.missingInBlock(quadRow, quadCol, missingValueSize);
 
         Random rand = new Random();
@@ -108,7 +109,7 @@ public class GuessACell extends MinimumPossibilityCell {
             if (alreadyGuess.contains(random)) continue;
 
             alreadyGuess.add(random);
-            if (this.validForCell(guessRow, guessCol, expectedValues[random])) break;
+            if (this.isValidForCell(guessRow, guessCol, expectedValues[random])) break;
         }
 
         this.cells[guessRow][guessCol] = expectedValues[random];
@@ -128,9 +129,10 @@ public class GuessACell extends MinimumPossibilityCell {
             snapshots.put(coordinate, this.cells.clone());
 
             if (guessCount == 1) {
+                System.out.println("Khushi ko khabar. we're defining snapshot...........................");
                 snapshot = new int[this.sudokuSize][this.sudokuSize];
                 for (int i = 0; i < this.sudokuSize; i++) {
-                    System.arraycopy(this.cells[i], 0, this.snapshot[i], 0, this.sudokuSize);
+                    this.snapshot[i] = this.cells[i].clone();
                 }
             }
 

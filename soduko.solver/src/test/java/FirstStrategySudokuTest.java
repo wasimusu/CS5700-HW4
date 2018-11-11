@@ -33,7 +33,6 @@ public class FirstStrategySudokuTest {
         String filename = Paths.get(path, file).toString();
 
         FileReadCommand fileReadCommand = new FileReadCommand(filename);
-//        FirstStrategySoduku soduku = fileReadCommand.readSudoku();
         GuessACell sudoku = fileReadCommand.readSudoku();
         sudoku.buildSoduko();
         sudoku.solve();

@@ -23,18 +23,6 @@ public class FileReadCommand implements Command {
         while ((line = reader.readLine()) != null)
             puzzle = puzzle.concat(line + System.lineSeparator());
 
-//        FirstStrategySoduku sudoku = new FirstStrategySoduku(sizePuzzle, charMap, puzzle);
-//        MinimumPossibilityCell sudoku = new MinimumPossibilityCell(sizePuzzle, charMap, puzzle);
-        GuessACell sudoku = new GuessACell(sizePuzzle, charMap, puzzle);
-//        boolean valid = sudoku.buildSoduko();
-
-//        if (valid) {
-//            sudoku.solve();
-//            System.out.println(sudoku.toString());
-//        }
-
-        // solve and display also
-//        return new FirstStrategySoduku(sizePuzzle, charMap, puzzle);
-        return sudoku;
+        return new GuessACell(sizePuzzle, charMap, puzzle);
     }
 }
