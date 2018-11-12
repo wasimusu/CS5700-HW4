@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class Invoker {
     private ArrayList<Command> historyOfCommands = new ArrayList<Command>();
-    private int maxHistorySize = 20;
+    private int maxHistorySize = 4;
 
     public void invoke(Command command) throws Exception{
         // Add to the list of commands that are to be executed

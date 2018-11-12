@@ -1,8 +1,5 @@
 public class Blocks extends Sudoku {
 
-    private int currentlyMissing = 100000;
-    private int previouslyMissing = 1000000;
-
     public Blocks(int sudokuSize, String map, String sudoku) {
         super(sudokuSize, map, sudoku);
     }
@@ -19,7 +16,11 @@ public class Blocks extends Sudoku {
         int col = 1000;
         int missing;
         int totalMissing = this.getTotalMissingCells();
-        if (totalMissing == 0) return;
+        if (totalMissing == 0) {
+//            System.out.println("Total missing 0");
+//            System.out.println(this.toString());
+            return;
+        }
 
         // Find the block of the sudoku with minimum missing pieces
         for (int i = 0; i < blockSize; i++) {

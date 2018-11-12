@@ -24,6 +24,7 @@ public class FirstStrategySudokuTest {
 //        String file = "Puzzle-9x9-0001.txt"; // valid - solved
 //        String file = "Puzzle-4x4-0201.txt";  // valid - solved
 //        String file = "Puzzle-4x4-0101.txt";  // valid - solved - blocks
+        String file = "Puzzle-4x4-0001.txt";  // valid - solved - blocks
 //        String file = "Puzzle-25x25-0101.txt"; // valid - solved
 //        String file = "Puzzle-16x16-0102.txt"; // valid - solved
 
@@ -35,12 +36,13 @@ public class FirstStrategySudokuTest {
 
 //        String file = "Puzzle-4x4-0904.txt"; // twins - any guess is correct guess
 //        String file = "Puzzle-9x9-0101.txt"; // works most of the times -- only one correct guess is required
-        String file = "Puzzle-16x16-0101.txt"; // valid - requires too many correct guesses
+//        String file = "Puzzle-16x16-0101.txt"; // valid - requires too many correct guesses
 
         String filename = Paths.get(path, file).toString();
 
         FileReadCommand fileReadCommand = new FileReadCommand(filename);
-        Blocks sudoku = fileReadCommand.readSudoku();
+        Sudoku sudo = fileReadCommand.execute();
+        OnlyChoice sudoku = new OnlyChoice(sudo.getSudokuSize(), sudo.getCharset(), sudo.getSudoku());
         sudoku.buildSoduko();
         sudoku.solve();
 

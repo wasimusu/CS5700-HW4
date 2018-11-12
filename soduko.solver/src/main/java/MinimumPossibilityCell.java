@@ -1,7 +1,5 @@
 public class MinimumPossibilityCell extends Sudoku {
 
-    private int previouslyMissing = 10000000;
-    private int currentlyMissing = 100000000;
     // We need a snapshot of the sudoku to reverse our guessing decision
     // Guess index
 

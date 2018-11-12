@@ -13,6 +13,19 @@ public class Sudoku implements SudokuBasic {
     protected int BLANK = -2;
     private long executionTime = 0; // total time of execution
     protected HashMap<Integer, Integer> minimumCells = new HashMap<Integer, Integer>();
+    protected String status = "";
+
+    // The difference between these values is used to check is a solver is making progress or not and thus if it should stop
+    protected int previouslyMissing = 10000000;
+    protected int currentlyMissing = 100000000;
+
+    public int getSudokuSize() {
+        return sudokuSize;
+    }
+
+    public String getCharset() {
+        return charset;
+    }
 
     public Sudoku(int sudokuSize, String map, String sudoku) {
         cells = new int[sudokuSize][sudokuSize];
@@ -39,11 +52,16 @@ public class Sudoku implements SudokuBasic {
         }
         long endTime = System.currentTimeMillis();
         this.executionTime = endTime - startTime;
+        // There is still possibility that the sudoku might not be solved even after attempts
+        if (this.getTotalMissingCells() == 0) status = "solved";
     }
 
     public void solve(String map, String sudoku) {
     }
 
+    public String getSudoku() {
+        return sudoku;
+    }
 
     protected boolean buildSoduko() {
         // returns true if the sudoku is valid else false
@@ -54,6 +72,7 @@ public class Sudoku implements SudokuBasic {
         boolean sane = true; // if the sudoku is valid or not
 
         if (missingItemCount < this.minimumCells.get(this.sudokuSize)) {
+            this.status = "Not enough filled cells to compute a unique solution";
             System.out.println("Less number of missing elements than permitted.");
             return false;
         }
@@ -73,12 +92,14 @@ public class Sudoku implements SudokuBasic {
         String[] sudokuElements = this.sudoku.split(System.lineSeparator());
         if (sudokuElements.length != this.sudokuSize) {
             System.out.println("Invalid dimension of sudoku.");
+            this.status = "Invalid dimension of sudoku";
             return false;
         }
         for (int i = 0; i < this.sudokuSize; i++) {
             String[] items = sudokuElements[i].split(" ");
             if (items.length != this.sudokuSize) {
                 System.out.println("Invalid dimension of sudoku.");
+                this.status = "Invalid dimension of sudoku";
                 return false;
             }
             for (int j = 0; j < this.sudokuSize; j++) {
@@ -86,6 +107,7 @@ public class Sudoku implements SudokuBasic {
                     cells[i][j] = char_to_int.get(items[j]);
                 else {
                     System.out.println("Contains invalid characters");
+                    this.status = "Sudoku contains invalid characters";
                     return false;
                 }
             }
@@ -107,6 +129,7 @@ public class Sudoku implements SudokuBasic {
                 item = cells[i][j]; // row
                 if (rowCharset.contains(item) && item != BLANK) {
                     System.out.println("Contains repeated item in row : " + i + " : " + item);
+                    this.status = "Contains repeated item in row " + i;
                     return false;
                 } else {
                     rowCharset.add(item);
@@ -115,6 +138,7 @@ public class Sudoku implements SudokuBasic {
                 item = cells[j][i]; // col
                 if (colCharset.contains(item) && item != BLANK) {
                     System.out.println("Contains repeated item in column : " + j);
+                    this.status = "Contains repeated item in column " + j;
                     return false;
                 } else {
                     colCharset.add(item);
@@ -170,15 +194,15 @@ public class Sudoku implements SudokuBasic {
 
     public String toString() {
         // Convert the solved sudoku to string to display on console or write to file
-        String stringPuzzle = "";
+        StringBuilder stringPuzzle = new StringBuilder();
         for (int i = 0; i < this.sudokuSize; i++) {
             for (int j = 0; j < this.sudokuSize; j++) {
-                stringPuzzle = stringPuzzle.concat(int_to_char.get(this.cells[i][j]) + " ");
-//                stringPuzzle = stringPuzzle.concat(String.valueOf(cells[i][j]) + " ");
+                if (j == this.sudokuSize - 1) stringPuzzle.append(int_to_char.get(this.cells[i][j]));
+                else stringPuzzle.append(int_to_char.get(this.cells[i][j]) + " ");
             }
-            stringPuzzle = stringPuzzle.concat(System.lineSeparator());
+            stringPuzzle.append(System.lineSeparator());
         }
-        return stringPuzzle;
+        return stringPuzzle.toString();
     }
 
     public int[] missingInBlock(int r, int c, int missCount) {
@@ -205,8 +229,8 @@ public class Sudoku implements SudokuBasic {
             index++;
         }
 
-        System.out.println(r + "," + c + " : " + missing[0]);
-        System.out.println(this.toString());
+//        System.out.println(r + "," + c + " : " + missing[0]);
+//        System.out.println(this.toString());
 
         return missing;
     }
@@ -276,10 +300,18 @@ public class Sudoku implements SudokuBasic {
 
     public String getSummary() {
         // This is the output that is written to output file
-        return "Input Sudoku :\n" +
-                this.sudoku + System.lineSeparator() + "\n" +
-                "Output Sudoku :\n" +
-                this.toString() + "\n\n" +
-                "Execution Time : " + String.valueOf(this.executionTime) + System.lineSeparator();
+        String summary = String.valueOf(this.sudokuSize) + System.lineSeparator() +
+                this.charset + System.lineSeparator() +
+                this.sudoku + System.lineSeparator();
+
+        if (this.status.equals("solved"))
+            summary = summary.concat(
+                    this.toString() + System.lineSeparator() +
+                            "Total time : " + String.valueOf(this.executionTime) + System.lineSeparator()
+            );
+        else {
+            summary = summary.concat(status);
+        }
+        return summary;
     }
 }
