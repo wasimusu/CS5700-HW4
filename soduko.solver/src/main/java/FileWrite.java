@@ -24,5 +24,4 @@ public class FileWrite{
         // dipose the resources handed to writer
         writer.close();
     }
-
 }

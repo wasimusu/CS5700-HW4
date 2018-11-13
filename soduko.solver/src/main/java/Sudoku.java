@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
-public class Sudoku implements SudokuBasic {
+public class Sudoku {
     protected int[][] cells;
     private HashMap<String, Integer> char_to_int = new HashMap<String, Integer>();
     private HashMap<Integer, String> int_to_char = new HashMap<Integer, String>();
@@ -42,21 +42,22 @@ public class Sudoku implements SudokuBasic {
     }
 
     // This is the template method for solving sudoku. This can't be overridden
-    public final void solveSudoku(String map, String sudoku) {
+    public final void solveSudoku() {
         long startTime = System.currentTimeMillis();
         boolean validSudoku = this.buildSoduko(); // build sudoku from the map, sudoku
         // If the sudoku is valid solve only then
         if (validSudoku) {
             boolean sane = this.sanityCheck(); // check if the sudoku is correct
-            if (sane) this.solve(map, sudoku); // if boolean is sane
+            if (sane) this.solve(); // if boolean is sane
         }
         long endTime = System.currentTimeMillis();
         this.executionTime = endTime - startTime;
         // There is still possibility that the sudoku might not be solved even after attempts
         if (this.getTotalMissingCells() == 0) status = "solved";
+        System.out.println(this.getTotalMissingCells());
     }
 
-    public void solve(String map, String sudoku) {
+    public void solve() {
     }
 
     public String getSudoku() {
