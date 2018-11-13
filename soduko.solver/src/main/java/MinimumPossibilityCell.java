@@ -19,7 +19,7 @@ public class MinimumPossibilityCell extends Sudoku {
 
         // If there is no change between two iterations, return
         this.currentlyMissing = this.getTotalMissingCells();
-        System.out.println("Empty Cells: " + this.currentlyMissing);
+//        System.out.println("Empty Cells: " + this.currentlyMissing);
         if (this.currentlyMissing == this.previouslyMissing || this.currentlyMissing == 0) return;
         this.previouslyMissing = this.currentlyMissing;
 
