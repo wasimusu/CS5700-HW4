@@ -24,13 +24,13 @@ public class GuessACellTest extends BlocksTest {
 
         for (String file : files) {
             String filename = Paths.get(inputPath, file).toString();
-//            FileReadCommand fileReadCommand = new FileReadCommand(filename);
+            FileReadCommand fileReadCommand = new FileReadCommand(filename);
 //
-//            Sudoku sudo = fileReadCommand.execute();
-//            SudokuStrategy strategy = new SudokuStrategy(sudo.getSudokuSize(), sudo.getCharset(), sudo.getSudoku());
-//            strategy.solve();
-            FileReadWriteCommand writeSudoku = new FileReadWriteCommand(filename, "Newfile.txt");
-            writeSudoku.execute();
+            Sudoku sudo = fileReadCommand.execute();
+            SudokuStrategy strategy = new SudokuStrategy(sudo.getSudokuSize(), sudo.getCharset(), sudo.getSudoku());
+            strategy.solve();
+//            FileReadWriteCommand writeSudoku = new FileReadWriteCommand(filename, "Newfile.txt");
+//            writeSudoku.execute();
 //            Sudoku sudo = fileReadCommand.execute();
 //            SudokuStrategy strategy = new SudokuStrategy(sudo.getSudokuSize(), sudo.getCharset(), sudo.getSudoku());
 //            strategy.solve();

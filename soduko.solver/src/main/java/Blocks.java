@@ -4,7 +4,7 @@ public class Blocks extends Sudoku {
         super(sudokuSize, map, sudoku);
     }
 
-    public void solve() {
+    public Sudoku solve() {
         // solve a quard for 4*4 or nonet for 9*9
         // if we have a missing value for a cell
         // we find what is missing
@@ -19,7 +19,7 @@ public class Blocks extends Sudoku {
         if (totalMissing == 0) {
 //            System.out.println("Total missing 0");
 //            System.out.println(this.toString());
-            return;
+            return new Sudoku(this.getSudokuSize(), this.getCharset(), this.toString());
         }
 
         // Find the block of the sudoku with minimum missing pieces
@@ -55,11 +55,11 @@ public class Blocks extends Sudoku {
         }
 
         // Quit if we are not making any progess
-        if (currentlyMissing == previouslyMissing) return;
+        if (currentlyMissing == previouslyMissing) return new Sudoku(this.getSudokuSize(), this.getCharset(), this.toString());;
         // Update stats
         previouslyMissing = currentlyMissing;
         currentlyMissing = this.getTotalMissingCells();
 
-        this.solve();
+        return this.solve();
     }
 }

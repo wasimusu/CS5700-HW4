@@ -24,24 +24,24 @@ public class GuessACell extends MinimumPossibilityCell {
     }
 
     @Override
-    public void solve() {
+    public Sudoku solve() {
         this.minimalOption(); // fill all the positions that can be deterministically filled
         int missingCells = this.getTotalMissingCells();
         boolean sane = this.sanityCheck();
-        if (missingCells == 0 && sane) return;
+        if (missingCells == 0 && sane) return new Sudoku(this.getSudokuSize(), this.getCharset(), this.toString());
         else {
             if (!sane) this.restoreToSaneState();
             if (guessCount < 99) {
                 guessACell();
-                solve();
-            } else {
-                System.out.println("Stopping without solving");
+                return solve();
             }
         }
 //        System.out.println("No of guesses " + this.guessCount + "\tItem Missing : " + this.getTotalMissingCells());
+        return new Sudoku(this.getSudokuSize(), this.getCharset(), this.toString());
+        // Should not break the implementation. Might be wrong.
     }
 
-    public void restoreToSaneState() {
+    private void restoreToSaneState() {
 //        String co = coordinates.
         String coordinate = String.valueOf(guessRow) + "#" + String.valueOf(guessCol);
         // This is the right way of copying array values in java. This copies value not reference
@@ -52,7 +52,7 @@ public class GuessACell extends MinimumPossibilityCell {
 //        System.out.println(this.toString());
     }
 
-    public void guessPositions() {
+    private void guessPositions() {
         // Find positions with minimum valid values so that guessing is easy
         int minValidCount = 1000;
         for (int i = 0; i < this.sudokuSize; i++) {

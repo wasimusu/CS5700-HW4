@@ -32,17 +32,11 @@ public class Sudoku {
         this.charset = map;
         this.sudoku = sudoku;  // the user input
         this.sudokuSize = sudokuSize;
-
-        this.minimumCells.put(4, 4);
-        this.minimumCells.put(9, 17);
-        this.minimumCells.put(16, 16);
-        this.minimumCells.put(25, 25);
-
         this.blockSize = (int) Math.sqrt((double) sudokuSize);
     }
 
     // This is the template method for solving sudoku. This can't be overridden
-    public final void solveSudoku() {
+    public final Sudoku solveSudoku() {
         long startTime = System.currentTimeMillis();
         boolean validSudoku = this.buildSoduko(); // build sudoku from the map, sudoku
         // If the sudoku is valid solve only then
@@ -55,9 +49,13 @@ public class Sudoku {
         // There is still possibility that the sudoku might not be solved even after attempts
         if (this.getTotalMissingCells() == 0) status = "solved";
         System.out.println(this.getTotalMissingCells());
+        Sudoku sudoku = new Sudoku(this.getSudokuSize(), this.getCharset(), this.toString());
+        sudoku.buildSoduko();
+        return sudoku;
     }
 
-    public void solve() {
+    public Sudoku solve() {
+        return this;
     }
 
     public String getSudoku() {
@@ -70,13 +68,6 @@ public class Sudoku {
         // Also calls sanity check to find repeatition of characters
 
         int missingItemCount = sudoku.length() - sudoku.replace("-", "").length();
-        boolean sane = true; // if the sudoku is valid or not
-
-        if (missingItemCount < this.minimumCells.get(this.sudokuSize)) {
-            this.status = "Not enough filled cells to compute a unique solution";
-            System.out.println("Less number of missing elements than permitted.");
-            return false;
-        }
         String[] maps = this.charset.split(" ");
 
         // Insert BLANK char into the hashmap

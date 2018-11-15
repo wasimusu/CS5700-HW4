@@ -7,11 +7,11 @@ public class MinimumPossibilityCell extends Sudoku {
         super(sudokuSize, map, sudoku);
     }
 
-    public void solve(){
-        this.minimalOption();
+    public Sudoku solve() {
+        return this.minimalOption();
     }
 
-    public void minimalOption() {
+    public Sudoku minimalOption() {
         // Loop through the cells
         // Find the possible values for missing cells
         // If it's one - just fill it
@@ -20,7 +20,9 @@ public class MinimumPossibilityCell extends Sudoku {
         // If there is no change between two iterations, return
         this.currentlyMissing = this.getTotalMissingCells();
 //        System.out.println("Empty Cells: " + this.currentlyMissing);
-        if (this.currentlyMissing == this.previouslyMissing || this.currentlyMissing == 0) return;
+        if (this.currentlyMissing == this.previouslyMissing || this.currentlyMissing == 0)
+            return new Sudoku(this.getSudokuSize(), this.getCharset(), this.toString());
+        ;
         this.previouslyMissing = this.currentlyMissing;
 
         // Find the block of the sudoku with minimum missing pieces
@@ -30,7 +32,7 @@ public class MinimumPossibilityCell extends Sudoku {
                 if (this.cells[i][j] == this.BLANK) fillCell(i, j);
             }
         }
-        minimalOption();
+        return minimalOption();
     }
 
     public void fillCell(int row, int col) {

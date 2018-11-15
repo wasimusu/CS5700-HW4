@@ -16,16 +16,31 @@ public class SudokuStrategy {
 
         // And write to file
         // return summary to be written
-        GuessACell sudoku = new GuessACell(this.sudokuSize, this.map, this.sudoku);
-        OnlyChoice onlyChoice = new OnlyChoice(this.sudokuSize, this.map, this.sudoku);
-        MinimumPossibilityCell minimumPossibilityCell = new MinimumPossibilityCell(this.sudokuSize, this.map, this.sudoku);
+        Sudoku sudoku = new Sudoku(this.sudokuSize, this.map, this.sudoku);
 
-        onlyChoice.solve();
-        minimumPossibilityCell.solve();
+        String moreSummary = "";
+        int i = 0;
+        while (i < 2) {
+            int missingCells = sudoku.getTotalMissingCells();
+            if (missingCells <= sudoku.getSudokuSize()) {
+                OnlyChoice onlyChoice = new OnlyChoice(this.sudokuSize, this.map, this.sudoku);
+                sudoku = onlyChoice.solveSudoku();
+                System.out.println("Done with only choice\n" + onlyChoice.toString());
+                if (sudoku.getTotalMissingCells() == 0) break;
+            } else {
+                System.out.println("Starting with backtracking");
+//                MinimumPossibilityCell minimumPossibilityCell = new MinimumPossibilityCell(this.sudokuSize, this.map, this.sudoku);
+                GuessACell guessACell = new GuessACell(this.sudokuSize, this.map, this.sudoku);
+                sudoku = guessACell.solveSudoku();
+                moreSummary = "Number of guesses tried : " + guessACell.getGuessCount();
+                if (sudoku.getTotalMissingCells() == 0) break;
 
-        sudoku.solveSudoku();
-        System.out.println(sudoku.toString());
-        String moreSummary = "Number of guesses tried : " + sudoku.getGuessCount();
-        return "";
+            }
+            i++;
+        }
+
+//        sudoku.solveSudoku();
+//        System.out.println(sudoku.toString());
+        return moreSummary;
     }
 }
