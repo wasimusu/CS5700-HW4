@@ -1,7 +1,7 @@
 public class OnlyChoice extends Sudoku {
     private int sudokuSum;
 
-    public OnlyChoice(int sudokuSize, String map, String sudoku) {
+    OnlyChoice(int sudokuSize, String map, String sudoku) {
         super(sudokuSize, map, sudoku);
         for(int i = 1; i<=this.sudokuSize; i++) sudokuSum += i;
     }
@@ -17,7 +17,7 @@ public class OnlyChoice extends Sudoku {
         if (this.currentlyMissing == 0) return new Sudoku(this.getSudokuSize(), this.getCharset(), this.toString()); // If we do not have missing elements, no worth processing further
 
         for (int i = 0; i < this.sudokuSize; i++) {
-            System.out.println(i + " : \t" + getMissingInRowCount(i) + ", " + getMissingInColCount(i));
+//            System.out.println(i + " : \t" + getMissingInRowCount(i) + ", " + getMissingInColCount(i));
             missingRow[i] = getMissingInRowCount(i);
             missingCol[i] = getMissingInColCount(i);
 

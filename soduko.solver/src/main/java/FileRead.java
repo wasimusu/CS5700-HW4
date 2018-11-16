@@ -3,9 +3,9 @@ import java.io.File;
 import java.io.FileReader;
 
 public class FileRead{
-    protected String inputFilename;
+    private String inputFilename;
 
-    public FileRead(String filename) {
+    FileRead(String filename) {
         this.inputFilename = filename;
     }
 

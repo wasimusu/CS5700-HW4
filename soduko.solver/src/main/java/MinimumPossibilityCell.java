@@ -3,7 +3,7 @@ public class MinimumPossibilityCell extends Sudoku {
     // We need a snapshot of the sudoku to reverse our guessing decision
     // Guess index
 
-    public MinimumPossibilityCell(int sudokuSize, String map, String sudoku) {
+    MinimumPossibilityCell(int sudokuSize, String map, String sudoku) {
         super(sudokuSize, map, sudoku);
     }
 
@@ -11,7 +11,7 @@ public class MinimumPossibilityCell extends Sudoku {
         return this.minimalOption();
     }
 
-    public Sudoku minimalOption() {
+    Sudoku minimalOption() {
         // Loop through the cells
         // Find the possible values for missing cells
         // If it's one - just fill it
@@ -35,7 +35,7 @@ public class MinimumPossibilityCell extends Sudoku {
         return minimalOption();
     }
 
-    public void fillCell(int row, int col) {
+    private void fillCell(int row, int col) {
         // determine the block from the row, col
         // find the missing values for that quad
         // check which of the values are valid for each missing cell in that quad

@@ -10,9 +10,9 @@ public class Sudoku {
     private String charset;
     protected int sudokuSize;
     protected int blockSize; // square root of sudoku size
+
     protected int BLANK = -2;
     private long executionTime = 0; // total time of execution
-    protected HashMap<Integer, Integer> minimumCells = new HashMap<Integer, Integer>();
     protected String status = "";
 
     // The difference between these values is used to check is a solver is making progress or not and thus if it should stop
@@ -25,6 +25,10 @@ public class Sudoku {
 
     public String getCharset() {
         return charset;
+    }
+
+    public long getExecutionTime() {
+        return executionTime;
     }
 
     public Sudoku(int sudokuSize, String map, String sudoku) {
@@ -294,16 +298,9 @@ public class Sudoku {
         // This is the output that is written to output file
         String summary = String.valueOf(this.sudokuSize) + System.lineSeparator() +
                 this.charset + System.lineSeparator() +
-                this.sudoku + System.lineSeparator();
+                this.getSudoku() + System.lineSeparator();
 
-        if (this.status.equals("solved"))
-            summary = summary.concat(
-                    this.toString() + System.lineSeparator() +
-                            "Total time : " + String.valueOf(this.executionTime) + System.lineSeparator()
-            );
-        else {
-            summary = summary.concat(status);
-        }
+        if (!status.equals("Solved")) summary = summary.concat(status);
         return summary;
     }
 }

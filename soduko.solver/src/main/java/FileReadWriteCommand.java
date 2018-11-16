@@ -1,8 +1,7 @@
 public class FileReadWriteCommand extends FileReadCommand {
     private String outputFilename;
-    private FileWrite fileWrite;
 
-    public FileReadWriteCommand(String inputFilename, String outputFilename) throws Exception {
+    FileReadWriteCommand(String inputFilename, String outputFilename) {
         super(inputFilename);
         this.outputFilename = outputFilename;
         this.fileRead = new FileRead(inputFilename);
@@ -10,8 +9,10 @@ public class FileReadWriteCommand extends FileReadCommand {
 
     public Sudoku execute() throws Exception {
         Sudoku sudoku = this.fileRead.readSudoku();
-        this.fileWrite = new FileWrite(this.outputFilename, sudoku.getSummary());
+        SudokuStrategy solveSudoku = new SudokuStrategy(sudoku.getSudokuSize(), sudoku.getCharset(), sudoku.getSudoku());
+        solveSudoku.solve();
+        FileWrite fileWrite = new FileWrite(this.outputFilename, solveSudoku.getSummary());
+        fileWrite.writePuzzle();
         return sudoku;
     }
-
 }

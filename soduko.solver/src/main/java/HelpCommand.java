@@ -1,8 +1,7 @@
 public class HelpCommand implements Command {
     // What do I feed to the Help command? Nothing.
 
-    public HelpCommand(){
-
+    HelpCommand(){
     }
 
     public GuessACell execute() {

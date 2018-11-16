@@ -8,7 +8,6 @@ public class GuessACell extends MinimumPossibilityCell {
     private int guessRow = -1;
     private int guessCol = -1;
 
-
     private int guessCount = 0;
     private ArrayList<String> guessPositions = new ArrayList<>(); // positions for which we have guesses
     private HashMap<String, int[][]> snapshots = new HashMap<String, int[][]>(); // coordinate and their snapshot
@@ -19,7 +18,7 @@ public class GuessACell extends MinimumPossibilityCell {
         return guessCount;
     }
 
-    public GuessACell(int sudokuSize, String map, String sudoku) {
+    GuessACell(int sudokuSize, String map, String sudoku) {
         super(sudokuSize, map, sudoku);
     }
 
@@ -84,7 +83,7 @@ public class GuessACell extends MinimumPossibilityCell {
         }
     }
 
-    public void guessACell() {
+    private void guessACell() {
         // Find the cell with the minimum expected values in the sudoku
         // Guess it.
         // Keep track of it

@@ -6,13 +6,12 @@ public class FileWrite{
     private String outputFilename;
     private String text;
 
-    public FileWrite(String outputFilename, String text) {
+    FileWrite(String outputFilename, String text) {
         this.outputFilename = outputFilename;
         this.text = text;
     }
 
     public void execute() throws Exception{
-//        MinimumPossibilityCell sudoku = this.readSudoku();
         this.writePuzzle();
     }
 

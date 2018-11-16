@@ -1,6 +1,6 @@
 public class ParseCommand {
 
-    public ParseCommand(String cmd) throws Exception {
+    ParseCommand(String cmd) throws Exception {
         String[] cmds = cmd.split(" ");
         Invoker invoker = new Invoker();
         if (cmd.equals("-h")) {

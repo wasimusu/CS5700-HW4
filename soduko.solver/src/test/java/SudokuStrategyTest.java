@@ -1,9 +1,10 @@
 import org.junit.Test;
 
 import java.nio.file.Paths;
-import java.util.ArrayList;
 
-public class GuessACellTest extends BlocksTest {
+import static org.junit.Assert.*;
+
+public class SudokuStrategyTest extends BlocksTest{
     @Test
     public void solve() throws Exception {
         String inputPath = "src/main/resources/SamplePuzzles/Input";
@@ -28,8 +29,7 @@ public class GuessACellTest extends BlocksTest {
             FileReadCommand fileReadCommand = new FileReadCommand(filename);
 
             Sudoku sudo = fileReadCommand.execute();
-            GuessACell sudoku = new GuessACell(sudo.getSudokuSize(), sudo.getCharset(), sudo.getSudoku());
-            sudoku.buildSoduko();
+            SudokuStrategy sudoku = new SudokuStrategy(sudo.getSudokuSize(), sudo.getCharset(), sudo.getSudoku());
             sudoku.solve();
 
             String outputFilename = Paths.get(assertsPath, file).toString();
@@ -37,17 +37,7 @@ public class GuessACellTest extends BlocksTest {
 
             System.out.println(sudoku.toString());
 //            System.out.println(expectedOutput);
-
 //            assert sudoku.toString().equals(expectedOutput);
         }
     }
 }
-
-
-//        for (String file : files) {
-//                String filename = Paths.get(inputPath, file).toString();
-//                FileReadCommand fileReadCommand = new FileReadCommand(filename);
-////            FileReadWriteCommand writeSolved = new FileReadWriteCommand(filename, "Output.txt");
-////            Sudoku sudo = writeSolved.execute();
-//                SudokuStrategy strategy = new SudokuStrategy(sudo.getSudokuSize(), sudo.getCharset(), sudo.getSudoku());
-//                strategy.solve();
