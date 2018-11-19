@@ -8,13 +8,8 @@ public class SudokuStrategyTest extends BlocksTest{
     @Test
     public void solve() throws Exception {
         String inputPath = "src/main/resources/SamplePuzzles/Input";
-        String assertsPath = "src/main/resources/SamplePuzzles/Asserts";
 
         String[] files = {
-//                "Puzzle-16x16-0101.txt", //
-//                "Puzzle-16x16-0201.txt", //
-//                "Puzzle-16x16-0301.txt", //
-
                 "Puzzle-4x4-0201.txt", // twins is not solved by blocks
                 "Puzzle-4x4-0904.txt", // twins - any guess is correct guess
                 "Puzzle-16x16-0901.txt",// valid - too many correct guess required

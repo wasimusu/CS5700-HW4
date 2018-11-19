@@ -33,7 +33,7 @@ public class SudokuStrategy {
             sudoku = onlyChoice.solveSudoku();
             missingCells = onlyChoice.getTotalMissingCells();
             System.out.println("Missing cells : " + missingCells);
-            summary.append("Strategies \t\t\tTime");
+            summary.append("Strategies \t\t\tTime (ms)");
             summary.append("\nOnly choice \t\t: " + onlyChoice.getExecutionTime());
             if (sudoku.getTotalMissingCells() == 0) break;
 

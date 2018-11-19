@@ -16,11 +16,11 @@ public class FileReadWriteCommandTest {
                 "Puzzle-16x16-0901.txt",// valid - too many correct guess required
                 "Puzzle-9x9-0101.txt", // works most of the times -- only one correct guess is required
                 "Puzzle-9x9-0401.txt", // works most of the times -- only one correct guess is required
+                "Puzzle-25x25-0101.txt", // valid - sometimes it solves
 
 //                "Puzzle-16x16-0101.txt", // valid - too many correct guess required
 //                "Puzzle-16x16-0201.txt", // valid - too many correct guess required
 //                "Puzzle-16x16-0301.txt", // valid - too many correct guess required
-//                "Puzzle-25x25-0901.txt", // valid - sometimes it solves
         };
 
         for (String file : files) {
