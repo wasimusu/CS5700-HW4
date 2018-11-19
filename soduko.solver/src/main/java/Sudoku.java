@@ -52,13 +52,14 @@ public class Sudoku {
         this.executionTime = endTime - startTime;
         // There is still possibility that the sudoku might not be solved even after attempts
         if (this.getTotalMissingCells() == 0) status = "solved";
-        System.out.println(this.getTotalMissingCells());
+        System.out.println("Total missing cells : " + this.getTotalMissingCells());
         Sudoku sudoku = new Sudoku(this.getSudokuSize(), this.getCharset(), this.toString());
         sudoku.buildSoduko();
         return sudoku;
     }
 
     public Sudoku solve() {
+        System.out.println("This should not be really called at all");
         return this;
     }
 
@@ -278,7 +279,7 @@ public class Sudoku {
         return count;
     }
 
-    public boolean isValidForCell(int row, int col, int value) {
+    protected boolean isValidForCell(int row, int col, int value) {
         // Check row and col to determine if a value is valid for a particular cell
         boolean valid = true;
         for (int i = 0; i < sudokuSize; i++) {

@@ -30,8 +30,7 @@ public class MinimumPossibilityCellTest extends BlocksTest{
 
             Sudoku sudo = fileReadCommand.execute();
             MinimumPossibilityCell sudoku = new MinimumPossibilityCell(sudo.getSudokuSize(), sudo.getCharset(), sudo.getSudoku());
-            sudoku.buildSoduko();
-            sudoku.solve();
+            sudoku.solveSudoku();
 
             String outputFilename = Paths.get(assertsPath, file).toString();
             String expectedOutput = readFile(outputFilename);

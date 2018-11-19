@@ -29,8 +29,7 @@ public class OnlyChoiceTest extends BlocksTest{
 
             Sudoku sudo = fileReadCommand.execute();
             OnlyChoice sudoku = new OnlyChoice(sudo.getSudokuSize(), sudo.getCharset(), sudo.getSudoku());
-            sudoku.buildSoduko();
-            sudoku.solve();
+            sudoku.solveSudoku();
 
             String outputFilename = Paths.get(assertsPath, file).toString();
             String expectedOutput = readFile(outputFilename);

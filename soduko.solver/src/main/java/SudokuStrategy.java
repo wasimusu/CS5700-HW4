@@ -39,13 +39,11 @@ public class SudokuStrategy {
 
             Blocks blocks = new Blocks(this.sudokuSize, this.map, this.sudoku);
             sudoku = blocks.solveSudoku();
-            missingCells = blocks.getTotalMissingCells();
             summary.append("\nBlocks \t\t\t: " + blocks.getExecutionTime());
             if (sudoku.getTotalMissingCells() == 0) break;
 
             GuessACell guessACell = new GuessACell(this.sudokuSize, this.map, this.sudoku);
             sudoku = guessACell.solveSudoku();
-            missingCells = guessACell.getTotalMissingCells();
             summary.append("\nGuessACell \t\t\t: " + guessACell.getExecutionTime());
             summary.append("\n\n\nNumber of guesses tried : " + guessACell.getGuessCount());
             if (sudoku.getTotalMissingCells() == 0) break;

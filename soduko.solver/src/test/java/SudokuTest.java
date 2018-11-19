@@ -6,6 +6,7 @@ public class SudokuTest {
 
     @Test
     public void solve() {
+        // This is an empty method meant to be overridden
     }
 
     @Test
@@ -86,7 +87,7 @@ public class SudokuTest {
                 "Puzzle-4x4-0904.txt", // twins - any guess is correct guess
                 "Puzzle-4x4-0902.txt",}; // invalid - workout        };
 
-        for(String file: files){
+        for (String file : files) {
             String filename = Paths.get(path, file).toString();
             FileReadCommand fileReadCommand = new FileReadCommand(filename);
             Sudoku sudoku = fileReadCommand.execute();
@@ -95,6 +96,36 @@ public class SudokuTest {
             // getSudoku returns the origin sudoku and toString converts cells back to original sudoku
             // we did not solve any cell here.
             assert sudoku.toString().equals(sudoku.getSudoku());
+        }
+    }
+
+    @Test
+    public void getSudokuSize() throws Exception {
+        String path = "src/main/resources/SamplePuzzles/Input";
+
+        String[] files = {
+                "Puzzle-4x4-0001.txt",
+                "Puzzle-4x4-0101.txt",
+                "Puzzle-4x4-0201.txt",
+                "Puzzle-9x9-0002.txt",
+                "Puzzle-9x9-0101.txt",
+                "Puzzle-9x9-0201.txt",
+                "Puzzle-9x9-0001.txt",
+                "Puzzle-9x9-0002.txt",
+                "Puzzle-9x9-0101.txt",
+                "Puzzle-9x9-0102.txt",
+                "Puzzle-9x9-0103.txt",
+                "Puzzle-16x16-0001.txt",
+        };
+
+        int[] answer = new int[]{4, 4, 4, 9, 9, 9, 9, 9, 9, 9, 9, 16};
+
+        for (int i = 0; i < files.length; i++) {
+            String filename = Paths.get(path, files[i]).toString();
+            FileReadCommand fileReadCommand = new FileReadCommand(filename);
+            Sudoku sudoku = fileReadCommand.execute();
+
+            assert sudoku.getSudokuSize() == answer[i];
         }
     }
 
@@ -340,5 +371,95 @@ public class SudokuTest {
             assert totalMissingCount[i] == sudoku.getTotalMissingCells();
         }
 
+    }
+
+    @Test
+    public void getSudoku() throws Exception {
+        String path = "src/main/resources/SamplePuzzles/Input";
+
+        String[] files = {
+                "Puzzle-4x4-0001.txt",
+                "Puzzle-4x4-0101.txt",
+                "Puzzle-4x4-0201.txt",
+                "Puzzle-9x9-0001.txt",  //9*9
+                "Puzzle-9x9-0002.txt",  //9*9
+                "Puzzle-9x9-0101.txt",
+                "Puzzle-9x9-0201.txt",
+                "Puzzle-9x9-0001.txt",
+                "Puzzle-9x9-0002.txt",
+                "Puzzle-9x9-0101.txt",
+
+//                // On doing visual inspection these also turned out to be good
+//                "Puzzle-9x9-0102.txt",
+//                "Puzzle-9x9-0103.txt",
+//                "Puzzle-16x16-0001.txt",
+        };
+
+        for (String file : files) {
+            String filename = Paths.get(path, file).toString();
+            FileRead fileRead = new FileRead(filename);
+            Sudoku sudoku = fileRead.readSudoku();
+            Sudoku sudoku1 = sudoku.solveSudoku();
+
+            String string1 = sudoku.getSudoku();
+            String string2 = sudoku1.getSudoku();
+
+            assert string1.equals(string2);
+        }
+    }
+
+    @Test
+    public void buildSudoku() throws Exception {
+        String path = "src/main/resources/SamplePuzzles/Input";
+
+        String[] files = {
+                "Puzzle-4x4-0001.txt",
+                "Puzzle-4x4-0101.txt",
+                "Puzzle-4x4-0201.txt",
+                "Puzzle-9x9-0001.txt",  //9*9
+                "Puzzle-9x9-0002.txt",  //9*9
+                "Puzzle-9x9-0101.txt",
+                "Puzzle-9x9-0201.txt",
+                "Puzzle-9x9-0001.txt",
+                "Puzzle-9x9-0002.txt",
+                "Puzzle-9x9-0101.txt",
+        };
+
+        for (String file : files) {
+            String filename = Paths.get(path, file).toString();
+            FileRead fileRead = new FileRead(filename);
+            Sudoku sudoku = fileRead.readSudoku();
+            sudoku.buildSoduko();
+
+            assert sudoku.getSudoku().equals(sudoku.toString());
+        }
+    }
+
+    @Test
+    // Visual Inspection required
+    public void getSummary() throws Exception {
+        String path = "src/main/resources/SamplePuzzles/Input";
+
+        String[] files = {
+                "Puzzle-4x4-0001.txt",
+                "Puzzle-4x4-0101.txt",
+                "Puzzle-4x4-0201.txt",
+                "Puzzle-9x9-0001.txt",  //9*9
+                "Puzzle-9x9-0002.txt",  //9*9
+                "Puzzle-9x9-0101.txt",
+                "Puzzle-9x9-0201.txt",
+                "Puzzle-9x9-0001.txt",
+                "Puzzle-9x9-0002.txt",
+                "Puzzle-9x9-0101.txt",
+        };
+
+        for (String file : files) {
+            String filename = Paths.get(path, file).toString();
+            FileRead fileRead = new FileRead(filename);
+            Sudoku sudo = fileRead.readSudoku();
+            GuessACell sudoku = new GuessACell(sudo.getSudokuSize(), sudo.getCharset(), sudo.getSudoku());
+            sudoku.solveSudoku();
+            System.out.println(sudoku.getSummary());
+        }
     }
 }

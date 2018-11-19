@@ -30,20 +30,18 @@ public class GuessACell extends MinimumPossibilityCell {
         if (missingCells == 0 && sane) return new Sudoku(this.getSudokuSize(), this.getCharset(), this.toString());
         else {
             if (!sane) this.restoreToSaneState();
-            if (guessCount < 99) {
-                guessACell();
-                return solve();
+            if (guessCount < 100) {
+                this.guessACell();
+                return this.solve();
             }
         }
-//        System.out.println("No of guesses " + this.guessCount + "\tItem Missing : " + this.getTotalMissingCells());
+        System.out.println("Exhausted all guesses " + this.guessCount);
         return new Sudoku(this.getSudokuSize(), this.getCharset(), this.toString());
         // Should not break the implementation. Might be wrong.
     }
 
     private void restoreToSaneState() {
-//        String co = coordinates.
         String coordinate = String.valueOf(guessRow) + "#" + String.valueOf(guessCol);
-        // This is the right way of copying array values in java. This copies value not reference
         for (int i = 0; i < this.sudokuSize; i++) {
             this.cells[i] = this.snapshots.get(coordinate)[i].clone();
         }
@@ -102,19 +100,18 @@ public class GuessACell extends MinimumPossibilityCell {
         int prevIndex = -1;
         if (guessIndex.containsKey(coordinate)) prevIndex = guessIndex.get(coordinate);
         int nextIndex = prevIndex;
-//        System.out.println("Started with index " + prevIndex + " / " + expectedValues.length + "\tfor " + coordinate);
+
+        // Compute the guess index
         for (int i = prevIndex + 1; i < expectedValues.length; i++) {
             if (this.isValidForCell(guessRow, guessCol, expectedValues[i])) {
                 nextIndex = i;
                 guessIndex.put(coordinate, i);
-//                System.out.println("Valid index " + nextIndex + "/" + expectedValues.length + " for " + coordinate + " : " + expectedValues[nextIndex]);
                 break;
             }
         }
 
         // did not find any worthy guess. we want to restore the state to the one level up guess
         if (nextIndex == prevIndex) {
-//            System.out.println("Did not find any valid new values for " + coordinate);
             guessIndex.remove(coordinate); // stores coordinate and index
             coordinates.remove(coordinate); // stores coordinate and index
             guessPositions.remove(coordinate); // stores coordinate only
@@ -132,24 +129,19 @@ public class GuessACell extends MinimumPossibilityCell {
 
         boolean state = this.sanityCheck();
         if (!state) {
-            int[] conflictPos = this.getConflictingCell();
-//            System.out.println(guessRow + "," + guessCol + "\t" + conflictPos[0] + "," + conflictPos[1] + " : " + expectedValues[random]);
             this.restoreToSaneState();  // restore to a sane state
-            this.guessACell();  // and try guessing again
-            this.cells[guessRow][guessCol] = this.BLANK;  // undo the state for adding snapshot
+            return;
         }
 
         // Before you change anything just make a snapshot
         if (!guessPositions.contains(coordinate)) guessPositions.add(coordinate);
         if (guessCount != 0) {
             int[][] snapshot = new int[this.sudokuSize][this.sudokuSize];
-            // This is the right way of copying array values in java. This copies value not reference
             for (int i = 0; i < this.sudokuSize; i++) {
                 snapshot[i] = this.cells[i].clone();
             }
             snapshots.put(coordinate, snapshot.clone());
             coordinates.put(coordinate, coordinates.size() + 1);
-//            System.out.println("Size of coordinates : " + coordinates.size());
         }
 
         // Update the cell with guessed values
