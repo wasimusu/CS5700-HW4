@@ -301,7 +301,7 @@ public class Sudoku {
                 this.charset + System.lineSeparator() +
                 this.getSudoku() + System.lineSeparator();
 
-        if (!status.equals("Solved")) summary = summary.concat(status);
+        if (!status.equals("Solved")) summary = summary.concat(status+"\n");
         return summary;
     }
 }

@@ -28,6 +28,7 @@ public class SudokuStrategy {
         while (true) {
             missingCells = sudoku.getTotalMissingCells();
             System.out.println("Missing cells before only choice : " + missingCells);
+            if (!sudoku.status.equals("Solved")) break;
 
             OnlyChoice onlyChoice = new OnlyChoice(this.sudokuSize, this.map, this.sudoku);
             sudoku = onlyChoice.solveSudoku();
@@ -49,10 +50,11 @@ public class SudokuStrategy {
             if (sudoku.getTotalMissingCells() == 0) break;
         }
 
-        sudoku.buildSoduko();
-        summary.append("\n\nSolution :\n" + sudoku.toString());
-        System.out.println("Summary : \n\n" + summary.toString());
-
+        if (sudoku.status.equals("Solved")) {
+            sudoku.buildSoduko();
+            summary.append("\n\nSolution :\n" + sudoku.toString());
+            System.out.println("Summary : \n\n" + summary.toString());
+        }
         return summary.toString();
     }
 }

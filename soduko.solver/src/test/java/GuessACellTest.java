@@ -1,7 +1,6 @@
 import org.junit.Test;
 
 import java.nio.file.Paths;
-import java.util.ArrayList;
 
 public class GuessACellTest extends BlocksTest {
     @Test
@@ -10,14 +9,18 @@ public class GuessACellTest extends BlocksTest {
         String assertsPath = "src/main/resources/SamplePuzzles/Asserts";
 
         String[] files = {
-                "Puzzle-16x16-0101.txt", //
-                "Puzzle-16x16-0201.txt", //
                 "Puzzle-16x16-0301.txt", //
+
+                "Puzzle-16x16-0001.txt", //
+                "Puzzle-16x16-0101.txt", //
+                "Puzzle-16x16-0102.txt", //
+                "Puzzle-16x16-0201.txt", //
+
+                "Puzzle-16x16-0901.txt",//
+                "Puzzle-16x16-0902.txt", //
 
                 "Puzzle-4x4-0201.txt", //
                 "Puzzle-4x4-0904.txt", //
-                "Puzzle-16x16-0901.txt",//
-                "Puzzle-16x16-0902.txt", //
                 "Puzzle-25x25-0101.txt", //
                 "Puzzle-9x9-0101.txt", //
                 "Puzzle-9x9-0401.txt", //

@@ -13,6 +13,7 @@ public class GuessACell extends MinimumPossibilityCell {
     private HashMap<String, int[][]> snapshots = new HashMap<String, int[][]>(); // coordinate and their snapshot
     private HashMap<String, Integer> coordinates = new HashMap<>();  // coordinate and their index for index lookup
     private HashMap<String, Integer> guessIndex = new HashMap<>(); // coorindate and their guess index
+    private boolean swapEndofPuzzle = false;
 
     public int getGuessCount() {
         return guessCount;
@@ -30,8 +31,15 @@ public class GuessACell extends MinimumPossibilityCell {
         if (missingCells == 0 && sane) return new Sudoku(this.getSudokuSize(), this.getCharset(), this.toString());
         else {
             if (!sane) this.restoreToSaneState();
-            if (guessCount < 100) {
+            if (guessCount < 1000) {
                 this.guessACell();
+                return this.solve();
+            } else if (!swapEndofPuzzle) {
+                guessCount = 0;
+                System.out.println("Swapped puzzle end");
+                swapEndofPuzzle = true;
+                this.buildSoduko();
+                System.out.println(this.toString());
                 return this.solve();
             }
         }
@@ -45,8 +53,10 @@ public class GuessACell extends MinimumPossibilityCell {
         for (int i = 0; i < this.sudokuSize; i++) {
             this.cells[i] = this.snapshots.get(coordinate)[i].clone();
         }
-//        System.out.println("After Restoring to a sane state " + coordinate);
-//        System.out.println(this.toString());
+//        if (guessCount > 2000) {
+//            System.out.println("After Restoring to a sane state " + coordinate);
+////            System.out.println(this.toString());
+//        }
     }
 
     private void guessPositions() {
@@ -71,10 +81,18 @@ public class GuessACell extends MinimumPossibilityCell {
                     }
 
                     // If this cell has the lowest valid options
-                    if (minValidCount > validValueCount) {
-                        minValidCount = validValueCount;
-                        guessRow = i;
-                        guessCol = j;
+                    if (!swapEndofPuzzle) {
+                        if (minValidCount > validValueCount) {
+                            minValidCount = validValueCount;
+                            guessRow = i;
+                            guessCol = j;
+                        }
+                    } else {
+                        if (minValidCount >= validValueCount) {
+                            minValidCount = validValueCount;
+                            guessRow = i;
+                            guessCol = j;
+                        }
                     }
                 }
             }
@@ -102,6 +120,8 @@ public class GuessACell extends MinimumPossibilityCell {
         int nextIndex = prevIndex;
 
         // Compute the guess index
+
+//        if (guessCount > 2000) System.out.println("Started with : " + prevIndex);
         for (int i = prevIndex + 1; i < expectedValues.length; i++) {
             if (this.isValidForCell(guessRow, guessCol, expectedValues[i])) {
                 nextIndex = i;
@@ -135,18 +155,19 @@ public class GuessACell extends MinimumPossibilityCell {
 
         // Before you change anything just make a snapshot
         if (!guessPositions.contains(coordinate)) guessPositions.add(coordinate);
-        if (guessCount != 0) {
-            int[][] snapshot = new int[this.sudokuSize][this.sudokuSize];
-            for (int i = 0; i < this.sudokuSize; i++) {
-                snapshot[i] = this.cells[i].clone();
-            }
-            snapshots.put(coordinate, snapshot.clone());
-            coordinates.put(coordinate, coordinates.size() + 1);
+        int[][] snapshot = new int[this.sudokuSize][this.sudokuSize];
+        for (int i = 0; i < this.sudokuSize; i++) {
+            snapshot[i] = this.cells[i].clone();
         }
+        snapshots.put(coordinate, snapshot.clone());
+        coordinates.put(coordinate, coordinates.size() + 1);
 
         // Update the cell with guessed values
         this.cells[guessRow][guessCol] = expectedValues[nextIndex];
-//        System.out.println(this.toString());
-        // System.out.println("Guess : " + guessRow + "," + guessCol + " : " + expectedValues[nextIndex]);
+//        if (guessCount > 0) {
+//            System.out.println("Iter : " + guessCount + "\tGuessed : " + guessRow + "," + guessCol + " : " + expectedValues[nextIndex]);
+//            System.out.println(this.toString());
+//        }
+
     }
 }
