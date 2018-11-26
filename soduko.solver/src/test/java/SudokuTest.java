@@ -5,8 +5,46 @@ import java.nio.file.Paths;
 public class SudokuTest {
 
     @Test
-    public void solve() {
-        // This is an empty method meant to be overridden
+    public void solve() throws Exception {
+        String path = "src/main/resources/SamplePuzzles/Input";
+
+        String[] validFiles = {
+                "Puzzle-4x4-0001.txt",
+                "Puzzle-4x4-0101.txt",
+                "Puzzle-4x4-0201.txt",
+                "Puzzle-4x4-0904.txt", // twins - any guess is correct guess
+                "Puzzle-4x4-0902.txt", // invalid - workout
+
+                "Puzzle-9x9-0001.txt", // valid - solved
+                "Puzzle-9x9-0101.txt", // works most of the times -- only one correct guess is required
+                "Puzzle-9x9-0002.txt",
+                "Puzzle-9x9-0101.txt",
+                "Puzzle-9x9-0201.txt",
+                "Puzzle-9x9-0001.txt",
+                "Puzzle-9x9-0002.txt",
+                "Puzzle-9x9-0101.txt",
+                "Puzzle-9x9-0102.txt",
+                "Puzzle-9x9-0103.txt",
+                "Puzzle-16x16-0001.txt",
+                "Puzzle-16x16-0101.txt",
+                "Puzzle-16x16-0102.txt", // valid - solved
+                "Puzzle-16x16-0201.txt", // valid - too many correct guess required
+                "Puzzle-16x16-0301.txt", // valid - too many correct guess required
+                "Puzzle-16x16-0901.txt", // valid - too many correct guess required
+                "Puzzle-16x16-0902.txt", // valid - sometimes it solves
+                "Puzzle-25x25-0101.txt", // valid - solved
+        };
+
+        // These are my valid files
+        for (String file : validFiles) {
+            System.out.println(file);
+            String filename = Paths.get(path, file).toString();
+            FileReadCommand fileReadCommand = new FileReadCommand(filename);
+            Sudoku sudoku = fileReadCommand.execute();
+            sudoku.solve();
+
+        }
+
     }
 
     @Test
@@ -59,6 +97,8 @@ public class SudokuTest {
             boolean result = sudoku.buildSoduko();
 //            System.out.println(file);
             assert !result;
+            boolean sanity = sudoku.sanityCheck();
+            assert !sanity;
         }
 
         // These are my valid files
@@ -160,9 +200,7 @@ public class SudokuTest {
             Sudoku sudoku = fileReadCommand.execute();
             sudoku.buildSoduko();
 
-            for (int r = 0; r < 4; r++) {
-                assert missingInBlock4by4[i][r] == sudoku.getMissingInRowCount(r);
-            }
+            int[] missingItems = sudoku.missingInBlock(0, 0, 0);
         }
 
     }
@@ -367,7 +405,6 @@ public class SudokuTest {
             FileReadCommand fileReadCommand = new FileReadCommand(filename);
             Sudoku sudoku = fileReadCommand.execute();
             sudoku.buildSoduko();
-//            System.out.println(sudoku.getTotalMissingCells());
             assert totalMissingCount[i] == sudoku.getTotalMissingCells();
         }
 
@@ -460,6 +497,32 @@ public class SudokuTest {
             GuessACell sudoku = new GuessACell(sudo.getSudokuSize(), sudo.getCharset(), sudo.getSudoku());
             sudoku.solveSudoku();
             System.out.println(sudoku.getSummary());
+        }
+    }
+
+    @Test
+    // Visual Inspection required
+    public void isValidForCell() throws Exception {
+        String path = "src/main/resources/SamplePuzzles/Input";
+
+        String[] files = {
+                "Puzzle-4x4-0201.txt",
+                "Puzzle-4x4-0904.txt",
+                "Puzzle-9x9-0101.txt",
+                "Puzzle-9x9-0102.txt",  //9*9
+                "Puzzle-9x9-0103.txt",  //9*9
+        };
+
+        int[] validValues = new int[]{2, 2, 1, 4, 5};
+        int[] invalidValues = new int[]{1, 1, 3, 1, 8};
+
+        for (int i = 0; i < files.length; i++) {
+            String filename = Paths.get(path, files[i]).toString();
+            FileRead fileRead = new FileRead(filename);
+            Sudoku sudo = fileRead.readSudoku();
+            sudo.buildSoduko();
+            assert sudo.isValidForCell(0, 0, validValues[i]);
+            assert !sudo.isValidForCell(0, 0, invalidValues[i]);
         }
     }
 }

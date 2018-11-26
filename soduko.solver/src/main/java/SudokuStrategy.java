@@ -24,16 +24,12 @@ public class SudokuStrategy {
 
         summary.append("\n\n" + sudoku.getSummary());
 
-        int missingCells = 0;
         while (true) {
-            missingCells = sudoku.getTotalMissingCells();
-            System.out.println("Missing cells before only choice : " + missingCells);
             if (!sudoku.status.equals("Solved")) break;
 
             OnlyChoice onlyChoice = new OnlyChoice(this.sudokuSize, this.map, this.sudoku);
             sudoku = onlyChoice.solveSudoku();
-            missingCells = onlyChoice.getTotalMissingCells();
-            System.out.println("Missing cells : " + missingCells);
+
             summary.append("Strategies \t\t\tTime (ms)");
             summary.append("\nOnly choice \t\t: " + onlyChoice.getExecutionTime());
             if (sudoku.getTotalMissingCells() == 0) break;
@@ -53,7 +49,6 @@ public class SudokuStrategy {
         if (sudoku.status.equals("Solved")) {
             sudoku.buildSoduko();
             summary.append("\n\nSolution :\n" + sudoku.toString());
-            System.out.println("Summary : \n\n" + summary.toString());
         }
         return summary.toString();
     }

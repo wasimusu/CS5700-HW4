@@ -41,6 +41,7 @@ public class GuessACellTest extends BlocksTest {
             System.out.println(expectedOutput);
 
             assert sudoku.getTotalMissingCells() != 0 || sudoku.toString().equals(expectedOutput);
+            System.out.println(file + "\tGueses: " + sudoku.getGuessCount());
         }
     }
 }

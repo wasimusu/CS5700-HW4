@@ -39,7 +39,6 @@ public class GuessACell extends MinimumPossibilityCell {
                 System.out.println("Swapped puzzle end");
                 swapEndofPuzzle = true;
                 this.buildSoduko();
-                System.out.println(this.toString());
                 return this.solve();
             }
         }
@@ -53,10 +52,6 @@ public class GuessACell extends MinimumPossibilityCell {
         for (int i = 0; i < this.sudokuSize; i++) {
             this.cells[i] = this.snapshots.get(coordinate)[i].clone();
         }
-//        if (guessCount > 2000) {
-//            System.out.println("After Restoring to a sane state " + coordinate);
-////            System.out.println(this.toString());
-//        }
     }
 
     private void guessPositions() {
