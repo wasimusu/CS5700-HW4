@@ -2,6 +2,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GuessACell extends MinimumPossibilityCell {
+
+    // We need a snapshot of the sudoku to reverse our guessing decision
     // Guess framework and data containers
     private int guessRow = -1;
     private int guessCol = -1;
@@ -61,7 +63,8 @@ public class GuessACell extends MinimumPossibilityCell {
                     int quadRow = Math.floorDiv(i, this.blockSize);
                     int quadCol = Math.floorDiv(j, this.blockSize);
 
-                    int[] expectedValues = this.missingInBlock(quadRow, quadCol);
+                    int missingValueSize = this.getMissingInBlockCount(quadRow, quadCol);
+                    int[] expectedValues = this.missingInBlock(quadRow, quadCol, missingValueSize);
 
                     int validValueCount = 0;
                     boolean isValid;
@@ -104,13 +107,16 @@ public class GuessACell extends MinimumPossibilityCell {
         String coordinate = String.valueOf(guessRow) + "#" + String.valueOf(guessCol);
 
         // Compute the expected values for this cell
-        int[] expectedValues = this.missingInBlock(quadRow, quadCol);
+        int missingValueSize = this.getMissingInBlockCount(quadRow, quadCol);
+        int[] expectedValues = this.missingInBlock(quadRow, quadCol, missingValueSize);
 
         int prevIndex = -1;
         if (guessIndex.containsKey(coordinate)) prevIndex = guessIndex.get(coordinate);
         int nextIndex = prevIndex;
 
         // Compute the guess index
+
+//        if (guessCount > 2000) System.out.println("Started with : " + prevIndex);
         for (int i = prevIndex + 1; i < expectedValues.length; i++) {
             if (this.isValidForCell(guessRow, guessCol, expectedValues[i])) {
                 nextIndex = i;

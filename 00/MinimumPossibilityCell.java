@@ -1,5 +1,8 @@
 public class MinimumPossibilityCell extends Sudoku {
 
+    // We need a snapshot of the sudoku to reverse our guessing decision
+    // Guess index
+
     MinimumPossibilityCell(int sudokuSize, String map, String sudoku) {
         super(sudokuSize, map, sudoku);
     }
@@ -40,7 +43,8 @@ public class MinimumPossibilityCell extends Sudoku {
         int quadRow = Math.floorDiv(row, this.blockSize);
         int quadCol = Math.floorDiv(col, this.blockSize);
 
-        int[] expectedValues = this.missingInBlock(quadRow, quadCol);
+        int missingValueSize = this.getMissingInBlockCount(quadRow, quadCol);
+        int[] expectedValues = this.missingInBlock(quadRow, quadCol, missingValueSize);
 
         int validValueCount = 0;
         int validValue = -2;

@@ -13,7 +13,7 @@ public class Sudoku {
 
     protected int BLANK = -2;
     private long executionTime = 0; // total time of execution
-    public String status = "";
+    protected String status = "";
 
     // The difference between these values is used to check is a solver is making progress or not and thus if it should stop
     protected int previouslyMissing = 10000000;
@@ -158,7 +158,7 @@ public class Sudoku {
         return stringPuzzle.toString();
     }
 
-    public int[] missingInBlock(int r, int c) {
+    public int[] missingInBlock(int r, int c, int missCount) {
         // Returns array of missing numbers in a part - quad or nonet
         // missing contains all the possible values
         HashSet<Integer> missingHash = new HashSet<>();
@@ -170,6 +170,7 @@ public class Sudoku {
                 int value = cells[i][j];
                 if (missingHash.contains(value)) {
                     missingHash.remove(value);
+//                    System.out.println(value + " present  " + i + "," + j);
                 }
             }
         }
@@ -180,6 +181,10 @@ public class Sudoku {
             missing[index] = num;
             index++;
         }
+
+//        System.out.println(r + "," + c + " : " + missing[0]);
+//        System.out.println(this.toString());
+
         return missing;
     }
 

@@ -23,7 +23,10 @@ public class SudokuStrategy {
         sudoku.buildSoduko();
 
         summary.append("\n\n" + sudoku.getSummary());
+
         while (true) {
+            if (!sudoku.status.equals("Solved")) break;
+
             OnlyChoice onlyChoice = new OnlyChoice(this.sudokuSize, this.map, this.sudoku);
             sudoku = onlyChoice.solveSudoku();
 
@@ -43,7 +46,9 @@ public class SudokuStrategy {
             if (sudoku.getTotalMissingCells() == 0) break;
         }
 
-        summary.append("\n\nSolution :\n" + sudoku.toString());
+            sudoku.buildSoduko();
+            summary.append("\n\nSolution :\n" + sudoku.toString());
+            System.out.println(sudoku.toString());
         return summary.toString();
     }
 }

@@ -5,12 +5,20 @@ public class Blocks extends Sudoku {
     }
 
     public Sudoku solve() {
+        // solve a quard for 4*4 or nonet for 9*9
+        // if we have a missing value for a cell
+        // we find what is missing
+        // we find valid values for that column
+        // we find valid values for that row
+
         int minMissing = 1000;
         int row = 1000;
         int col = 1000;
         int missing;
         int totalMissing = this.getTotalMissingCells();
         if (totalMissing == 0) {
+//            System.out.println("Total missing 0");
+//            System.out.println(this.toString());
             return new Sudoku(this.getSudokuSize(), this.getCharset(), this.toString());
         }
 
@@ -26,10 +34,11 @@ public class Blocks extends Sudoku {
             }
         }
 
+        System.out.println("Minimum missing quad : " + row + " , " + col + " : " + minMissing + " values");
         for (int i = row * blockSize; i < row * blockSize + blockSize; i++) {
             for (int j = col * blockSize; j < col * blockSize + blockSize; j++) {
                 if (this.cells[i][j] < 0) {
-                    int[] expectedValues = this.missingInBlock(row, col);
+                    int[] expectedValues = this.missingInBlock(row, col, 0);
                     int validCount = 0;
                     int validValue = -1;
                     for (int value : expectedValues) {
@@ -47,7 +56,6 @@ public class Blocks extends Sudoku {
 
         // Quit if we are not making any progess
         if (currentlyMissing == previouslyMissing) return new Sudoku(this.getSudokuSize(), this.getCharset(), this.toString());;
-
         // Update stats
         previouslyMissing = currentlyMissing;
         currentlyMissing = this.getTotalMissingCells();

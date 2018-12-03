@@ -200,7 +200,7 @@ public class SudokuTest {
             Sudoku sudoku = fileReadCommand.execute();
             sudoku.buildSoduko();
 
-            int[] missingItems = sudoku.missingInBlock(0, 0, 0);
+            int[] missingItems = sudoku.missingInBlock(0, 0);
         }
 
     }
