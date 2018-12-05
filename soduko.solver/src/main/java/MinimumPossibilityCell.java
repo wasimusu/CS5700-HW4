@@ -9,17 +9,12 @@ public class MinimumPossibilityCell extends Sudoku {
     }
 
     Sudoku minimalOption() {
-        // Loop through the cells
-        // Find the possible values for missing cells
-        // If it's one - just fill it
-        // for each cell determine its quad to determine expected quad values
+        // Fill a cell if it's empty
 
         // If there is no change between two iterations, return
         this.currentlyMissing = this.getTotalMissingCells();
-//        System.out.println("Empty Cells: " + this.currentlyMissing);
         if (this.currentlyMissing == this.previouslyMissing || this.currentlyMissing == 0)
             return new Sudoku(this.getSudokuSize(), this.getCharset(), this.toString());
-        ;
         this.previouslyMissing = this.currentlyMissing;
 
         // Find the block of the sudoku with minimum missing pieces
@@ -44,9 +39,8 @@ public class MinimumPossibilityCell extends Sudoku {
 
         int validValueCount = 0;
         int validValue = -2;
-        boolean isValid;
         for (int value : expectedValues) {
-            isValid = this.isValidForCell(row, col, value);
+            boolean isValid = this.isValidForCell(row, col, value);
             if (isValid) {
                 validValueCount += 1;
                 validValue = value;

@@ -9,8 +9,7 @@ public class GuessACell extends MinimumPossibilityCell {
     private int guessCount = 0;
     private ArrayList<String> guessPositions = new ArrayList<>(); // positions for which we have guesses
     private HashMap<String, int[][]> snapshots = new HashMap<String, int[][]>(); // coordinate and their snapshot
-    private HashMap<String, Integer> coordinates = new HashMap<>();  // coordinate and their index for index lookup
-    private HashMap<String, Integer> guessIndex = new HashMap<>(); // coorindate and their guess index
+    private HashMap<String, Integer> guessIndex = new HashMap<>(); // coorindate and until which index we have guessed for a cell
     private boolean swapEndofPuzzle = false;
 
     public int getGuessCount() {
@@ -122,7 +121,6 @@ public class GuessACell extends MinimumPossibilityCell {
         // did not find any worthy guess. we want to restore the state to the one level up guess
         if (nextIndex == prevIndex) {
             guessIndex.remove(coordinate); // stores coordinate and index
-            coordinates.remove(coordinate); // stores coordinate and index
             guessPositions.remove(coordinate); // stores coordinate only
             snapshots.remove(coordinate); // remove the snapshot
 
@@ -149,7 +147,6 @@ public class GuessACell extends MinimumPossibilityCell {
             snapshot[i] = this.cells[i].clone();
         }
         snapshots.put(coordinate, snapshot.clone());
-        coordinates.put(coordinate, coordinates.size() + 1);
 
         // Update the cell with guessed values
         this.cells[guessRow][guessCol] = expectedValues[nextIndex];

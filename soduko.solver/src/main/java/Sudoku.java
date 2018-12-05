@@ -7,10 +7,9 @@ public class Sudoku {
     private HashMap<String, Integer> char_to_int = new HashMap<String, Integer>();
     private HashMap<Integer, String> int_to_char = new HashMap<Integer, String>();
     private String sudoku;
-    private String charset;
+    private String charset; // character set used in sudoku
     protected int sudokuSize;
     protected int blockSize; // square root of sudoku size
-
     protected int BLANK = -2;
     private long executionTime = 0; // total time of execution
     public String status = "";
@@ -42,24 +41,23 @@ public class Sudoku {
     // This is the template method for solving sudoku. This can't be overridden
     public final Sudoku solveSudoku() {
         long startTime = System.currentTimeMillis();
-        boolean validSudoku = this.buildSoduko(); // build sudoku from the map, sudoku
-        // If the sudoku is valid solve only then
-        if (validSudoku) {
-            boolean sane = this.sanityCheck(); // check if the sudoku is correct
-            if (sane) this.solve(); // if boolean is sane
-        }
+
+        boolean validSudoku = this.buildSoduko(); // convert string to 2d array of intd
+        if (validSudoku) this.solve(); // solve if the sudoku is valid
+
         long endTime = System.currentTimeMillis();
         this.executionTime = endTime - startTime;
+
         // There is still possibility that the sudoku might not be solved even after attempts
         if (this.getTotalMissingCells() == 0) status = "solved";
-        System.out.println("Total missing cells : " + this.getTotalMissingCells());
+
         Sudoku sudoku = new Sudoku(this.getSudokuSize(), this.getCharset(), this.toString());
         sudoku.buildSoduko();
         return sudoku;
     }
 
     public Sudoku solve() {
-        System.out.println("This should not be really called at all");
+        System.out.println("This should not be really called at all except for testing");
         return this;
     }
 
@@ -69,10 +67,9 @@ public class Sudoku {
 
     protected boolean buildSoduko() {
         // returns true if the sudoku is valid else false
-        // Checks of invalid characters and invalid number of rows and columns
+        // Checks for invalid characters and invalid number of rows and columns
         // Also calls sanity check to find repeatition of characters
 
-        int missingItemCount = sudoku.length() - sudoku.replace("-", "").length();
         String[] maps = this.charset.split(" ");
 
         // Insert BLANK char into the hashmap
@@ -88,14 +85,12 @@ public class Sudoku {
         // Populate members of the cells
         String[] sudokuElements = this.sudoku.split(System.lineSeparator());
         if (sudokuElements.length != this.sudokuSize) {
-            System.out.println("Invalid dimension of sudoku.");
             this.status = "Invalid dimension of sudoku";
             return false;
         }
         for (int i = 0; i < this.sudokuSize; i++) {
             String[] items = sudokuElements[i].split(" ");
             if (items.length != this.sudokuSize) {
-                System.out.println("Invalid dimension of sudoku.");
                 this.status = "Invalid dimension of sudoku";
                 return false;
             }
@@ -103,7 +98,6 @@ public class Sudoku {
                 if (char_to_int.containsKey(items[j]))
                     cells[i][j] = char_to_int.get(items[j]);
                 else {
-                    System.out.println("Contains invalid characters");
                     this.status = "Sudoku contains invalid characters";
                     return false;
                 }
@@ -115,17 +109,14 @@ public class Sudoku {
     public boolean sanityCheck() {
         // Check if the sudoku you're going to solve is correct
         // Check if the sudoku that you solved is correct
-        int item = BLANK;
         for (int i = 0; i < this.sudokuSize; i++) {
-
             ArrayList<Integer> colCharset = new ArrayList<Integer>();
             ArrayList<Integer> rowCharset = new ArrayList<Integer>();
 
             for (int j = 0; j < this.sudokuSize; j++) {
 
-                item = cells[i][j]; // row
-                if (rowCharset.contains(item) && item != BLANK) {
-                    System.out.println("Contains repeated item in row : " + i + " : " + item);
+                int item = cells[i][j]; // row
+                if (item != BLANK && rowCharset.contains(item)) {
                     this.status = "Contains repeated item in row " + i;
                     return false;
                 } else {
@@ -133,8 +124,7 @@ public class Sudoku {
                 }
 
                 item = cells[j][i]; // col
-                if (colCharset.contains(item) && item != BLANK) {
-                    System.out.println("Contains repeated item in column : " + j);
+                if (item != BLANK && colCharset.contains(item)) {
                     this.status = "Contains repeated item in column " + j;
                     return false;
                 } else {
@@ -203,9 +193,7 @@ public class Sudoku {
             if (this.cells[r][i] < 0) count++;
         }
         if (count == 0) {
-            {
-                return this.sudokuSize;
-            }
+            return this.sudokuSize;
         } else return count;
     }
 
@@ -232,18 +220,10 @@ public class Sudoku {
 
     protected boolean isValidForCell(int row, int col, int value) {
         // Check row and col to determine if a value is valid for a particular cell
-        boolean valid = true;
         for (int i = 0; i < sudokuSize; i++) {
-            if (value == this.cells[row][i]) {
-                valid = false;
-                break;
-            }
-            if (value == this.cells[i][col]) {
-                valid = false;
-                break;
-            }
+            if ((value == this.cells[row][i]) || (value == this.cells[i][col])) return false;
         }
-        return valid;
+        return true;
     }
 
     public String getSummary() {
