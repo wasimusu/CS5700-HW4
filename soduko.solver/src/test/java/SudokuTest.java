@@ -1,6 +1,7 @@
 import org.junit.Test;
 
 import java.nio.file.Paths;
+import java.util.HashSet;
 
 public class SudokuTest {
 
@@ -523,6 +524,40 @@ public class SudokuTest {
             sudo.buildSoduko();
             assert sudo.isValidForCell(0, 0, validValues[i]);
             assert !sudo.isValidForCell(0, 0, invalidValues[i]);
+        }
+    }
+
+    @Test
+    // Visual Inspection required
+    public void iteratorTest() throws Exception {
+        String path = "src/main/resources/SamplePuzzles/Input";
+
+        String[] files = {
+                "Puzzle-4x4-0001.txt",
+                "Puzzle-4x4-0101.txt",
+                "Puzzle-4x4-0201.txt",
+                "Puzzle-9x9-0001.txt",  //9*9
+                "Puzzle-9x9-0002.txt",  //9*9
+                "Puzzle-9x9-0101.txt",
+                "Puzzle-9x9-0201.txt",
+                "Puzzle-9x9-0001.txt",
+                "Puzzle-9x9-0002.txt",
+                "Puzzle-9x9-0101.txt",
+        };
+
+        HashSet<Sudoku> sudokus = new HashSet<>();
+
+        for (String file : files) {
+            String filename = Paths.get(path, file).toString();
+            FileRead fileRead = new FileRead(filename);
+            Sudoku sudoku = fileRead.readSudoku();
+            sudokus.add(sudoku);
+        }
+
+        for (Sudoku sudoku : sudokus) {
+            SudokuStrategy sudo = new SudokuStrategy(sudoku.getSudokuSize(), sudoku.getCharset(), sudoku.getSudoku());
+            sudo.solve();
+            System.out.println(sudo.getSummary());
         }
     }
 }

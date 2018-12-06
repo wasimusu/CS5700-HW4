@@ -1,11 +1,10 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
-public class Sudoku {
+public class Sudoku implements Iterable<Sudoku> {
     protected int[][] cells;
     private HashMap<String, Integer> char_to_int = new HashMap<String, Integer>();
     private HashMap<Integer, String> int_to_char = new HashMap<Integer, String>();
+    private Set<Sudoku> sudokus = new HashSet<Sudoku>();
     private String sudoku;
     private String charset; // character set used in sudoku
     protected int sudokuSize;
@@ -234,5 +233,14 @@ public class Sudoku {
 
         if (!status.equals("Solved")) summary = summary.concat(status + "\n");
         return summary;
+    }
+
+    public void add(final Sudoku sudoku) {
+        sudokus.add(sudoku);
+    }
+
+    @Override
+    public Iterator<Sudoku> iterator() {
+        return sudokus.iterator();
     }
 }

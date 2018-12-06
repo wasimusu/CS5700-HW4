@@ -8,11 +8,14 @@ public class SudokuStrategyTest extends BlocksTest {
         String inputPath = "src/main/resources/SamplePuzzles/Input";
 
         String[] files = {
-                "Puzzle-16x16-0001.txt", //
-                "Puzzle-16x16-0101.txt", //
-                "Puzzle-16x16-0102.txt", //
-                "Puzzle-16x16-0201.txt", //
+//                "Puzzle-36x36-01-A001.txt",
+//                "Puzzle-36x36-01-C001.txt",
 
+                "Puzzle-36x36-01-B001.txt",
+//                "Puzzle-16x16-0001.txt", //
+//                "Puzzle-16x16-0101.txt", //
+//                "Puzzle-16x16-0102.txt", //
+//                "Puzzle-16x16-0201.txt", //
 //                "Puzzle-16x16-0901.txt",//
 //                "Puzzle-16x16-0902.txt", //
 //
