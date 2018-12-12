@@ -1,9 +1,9 @@
 # CS5700-HW4
 
 ## Changed implementation
--- Shortened code
--- Changed implementation of OnlyChoice strategy to make it shorter
--- Changed missingInBlock(quadRow, quadCol, missingValueSize) to missingInBlock(quadRow, quadCol)
+- Shortened code
+- Changed implementation of OnlyChoice strategy to make it shorter
+- Changed missingInBlock(quadRow, quadCol, missingValueSize) to missingInBlock(quadRow, quadCol)
 
 ## Scrutinized the whole code couple of times to determine what was not essential
 - Removed variables that I thought were not necessary. It helps with Object Oriented Software Practice of Removing Temporary Variables.
