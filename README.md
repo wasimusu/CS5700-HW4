@@ -30,7 +30,7 @@ Original UML diagram with incomplete command pattern
 ![](https://github.com/wasimusu/CS5700-HW4/blob/master/soduko.solver/Sudoku.png)
 
 Updated UML diagram with command pattern and iterator pattern
-![]https://github.com/wasimusu/CS5700-HW4/blob/master/soduko.solver/Blocks.jpg
+![](https://github.com/wasimusu/CS5700-HW4/blob/master/soduko.solver/Blocks.jpg)
 
 Sequence diagram did not change
-![]https://github.com/wasimusu/CS5700-HW4/blob/master/soduko.solver/System%20Sequence%20Diagram.jpeg
+![](https://github.com/wasimusu/CS5700-HW4/blob/master/soduko.solver/System%20Sequence%20Diagram.jpeg)
