@@ -1,9 +1,13 @@
 # CS5700-HW4
 
+## Changed implementation
+-- Shortened code
+-- Changed implementation of OnlyChoice strategy to make it shorter
+-- Changed missingInBlock(quadRow, quadCol, missingValueSize) to missingInBlock(quadRow, quadCol)
+
 ## Scrutinized the whole code couple of times to determine what was not essential
-- Removed functions that I deemed were basically dead.
 - Removed variables that I thought were not necessary. It helps with Object Oriented Software Practice of Removing Temporary Variables.
-- Altogther these contribute about 150 lines of code.
+- Altogther algorithm change and variable removal contribute about 150 lines of code.
 - The tests that I had in place helped me ensure that removing something did not (visibly) break the code.
 
 ## Implemented iterator pattern.
