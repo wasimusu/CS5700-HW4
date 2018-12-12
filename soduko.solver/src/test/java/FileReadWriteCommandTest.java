@@ -8,10 +8,11 @@ public class FileReadWriteCommandTest {
         String outputPath = "src/main/resources/SamplePuzzles/Outputs2";
 
         String[] files = {
+
                 "Puzzle-16x16-0001.txt", //
-                "Puzzle-16x16-0101.txt", //
-                "Puzzle-16x16-0102.txt", //
-                "Puzzle-16x16-0201.txt", //
+//                "Puzzle-16x16-0101.txt", //
+//                "Puzzle-16x16-0102.txt", //
+//                "Puzzle-16x16-0201.txt", //
 
 //                "Puzzle-16x16-0901.txt",//
 //                "Puzzle-16x16-0902.txt", //

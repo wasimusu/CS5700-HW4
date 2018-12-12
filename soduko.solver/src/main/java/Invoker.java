@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class Invoker {
     private ArrayList<Command> historyOfCommands = new ArrayList<Command>();
 
-    public void invoke(Command command) throws Exception{
+    public void invoke(Command command) throws Exception {
         // Add to the list of commands that are to be executed
 
         if (command != null) {
@@ -19,5 +19,9 @@ public class Invoker {
                 historyOfCommands.remove(i);
             }
         }
+    }
+
+    public int getCommandSize() {
+        return historyOfCommands.size();
     }
 }
