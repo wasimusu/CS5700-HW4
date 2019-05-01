@@ -1,6 +1,6 @@
 # CS5700-HW4
 
-## Changed implementation
+## Improvement over previous homework
 - Shortened code
 - Changed implementation of OnlyChoice strategy to make it shorter
 - Changed missingInBlock(quadRow, quadCol, missingValueSize) to missingInBlock(quadRow, quadCol)
