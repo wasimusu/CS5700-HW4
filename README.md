@@ -12,7 +12,7 @@
 
 ## Implemented iterator pattern.
 - It makes the encapsulation stronger.
-- Now you can loop through Sudoku like o
+- Now you can loop through Sudoku like an iterator
 - Wrote tests for these
 
 ## Implemented Command Pattern
