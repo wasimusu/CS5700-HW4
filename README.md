@@ -11,6 +11,10 @@ Updated UML diagram with command pattern and iterator pattern
 Sequence diagram did not change
 ![](https://github.com/wasimusu/CS5700-HW4/blob/master/soduko.solver/System%20Sequence%20Diagram.jpeg)
 
+## Tested the 36*36 sudoku
+- Tested the backtracking manually. The backtracking works as intended.
+- Works for "Puzzle-36x36-01-B001.txt" The other two require too many guesses and thus too much recursion. 
+
 ## Implemented iterator pattern.
 - It makes the encapsulation stronger.
 - Now you can loop through Sudoku like an iterator
@@ -22,6 +26,3 @@ Sequence diagram did not change
 - Invoker keeps track of maximum N command history to avoid overwhelming memory.
 - Wrote tests for these
 
-## Tested the 36*36 sudoku
-- Tested the backtracking manually. The backtracking works as intended.
-- Works for "Puzzle-36x36-01-B001.txt" The other two require too many guesses and thus too much recursion. 
